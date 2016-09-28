@@ -1,0 +1,66 @@
+%YAML 1.2
+---
+name: Swift
+file_extensions:
+  - .swift
+scope: source.swift
+contexts:
+  main:
+    - include: comment
+    - include: string
+## Comments
+  comment:
+    - match: //+
+      scope: punctuation.definition.comment
+      push: line-comment
+    - match: /\*
+      scope: punctuation.definition.comment.begin
+      push: block-comment
+
+  line-comment:
+    - meta_scope: comment.line
+    - match: ' *(MARK:)(.*)'
+      captures:
+        1: punctuation.definition.comment
+        2: meta.toc-list
+      pop: true
+    - match: .*
+      pop: true
+
+  block-comment:
+    - meta_scope: comment.block
+    - match: \*/
+      scope: punctuation.definition.comment.end
+      pop: true
+
+## Literals
+  string:
+    - match: '"'
+      scope: punctuation.definition.string.begin
+      push: string-double
+
+  string-double:
+    - meta_scope: string.quoted.double
+    - match: \\\(
+      scope: punctuation.section.embedded.begin
+      set: embedded
+    - match: '"'
+      scope: punctuation.definition.string.end
+      pop: true
+
+  embedded:
+    - include: main
+    - match: \)
+      scope: punctuation.section.embedded.end
+      set: string-double
+
+
+
+
+
+
+
+
+
+
+
