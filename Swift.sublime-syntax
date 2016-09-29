@@ -8,6 +8,7 @@ contexts:
   main:
     - include: comment
     - include: string
+    - include: class
 ## Comments
   comment:
     - match: //+
@@ -54,9 +55,39 @@ contexts:
       scope: punctuation.section.embedded.end
       set: string-double
 
+## Class declarations
+  class:
+    - include: class-attribute
+    - include: class-access-modifier
+    - include: class-final
+    - include: class-class
 
+  class-attribute:
+    - match: (?:@objc|@UIApplicationMain|@NSApplicationMain|@IBDesignable)(?=\s.*class)
+      scope: keyword.other.swift meta.class.swift
+      set: class
 
+  class-access-modifier:
+    - match: (?:open|public|internal|fileprivate|private)(?:\s+(open|public|internal|fileprivate|private))*(?=\s.*class)
+      scope: keyword.other.swift meta.class.swift
+      captures:
+        1: invalid.illegal
+      set: class
 
+  class-final:
+    - match: (?:final)(?:\s+(final))*(?=\s.*class)
+      scope: keyword.other.swift meta.class.swift
+      captures:
+        1: invalid.illegal
+      set: class
+
+  class-class:
+    - match: class
+      scope: keyword.entity.swift meta.class.swift
+      set: class-name
+
+  class-name:
+    - match: "hello"
 
 
 

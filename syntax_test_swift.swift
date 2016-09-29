@@ -27,3 +27,11 @@
 //^^^^^^^                string.quoted.double
 //                       ^ string.quoted.double
 
+@IBDesignable @objc fileprivate private final class MyViewController : UIViewController { }
+// <- keyword.other
+// ^^^^^^^^^^ keyword.other meta.class
+//            ^^^^^ keyword.other meta.class
+//                  ^^^^^^^^^^^ keyword.other meta.class
+//                              ^^^^^^^ meta.class invalid.illegal
+//                                      ^^^^^ keyword.other meta.class
+//                                            ^^^^^ keyword.entity meta.class
