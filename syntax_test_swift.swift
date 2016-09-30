@@ -27,11 +27,29 @@
 //^^^^^^^                string.quoted.double
 //                       ^ string.quoted.double
 
-@IBDesignable @objc fileprivate private final class MyViewController : UIViewController { }
+@IBDesignable @objc fileprivate private final class MyViewController { }
 // <- keyword.other
-// ^^^^^^^^^^ keyword.other meta.class
-//            ^^^^^ keyword.other meta.class
-//                  ^^^^^^^^^^^ keyword.other meta.class
-//                              ^^^^^^^ meta.class invalid.illegal
-//                                      ^^^^^ keyword.other meta.class
-//                                            ^^^^^ keyword.entity meta.class
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.class
+// ^^^^^^^^^^ keyword.other
+//            ^^^^^ keyword.other
+//                  ^^^^^^^^^^^ meta.class
+//                              ^^^^^^^ invalid.illegal
+//                                      ^^^^^ keyword.other
+//                                            ^^^^^ keyword.entity
+
+class Mvc : MyClass, MyProtocol { }
+// <- keyword.entity
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.class
+//    ^^^ support.class
+//        ^ punctuation.separator
+//          ^^^^^^^ support.class
+//                 ^ punctuation.separator
+//                   ^^^^^^^^^^ support.class
+//                              ^ punctuation.section.braces.begin
+//                               ^ meta.braces
+//                                ^ punctuation.section.braces.end
+
+
+
+
+

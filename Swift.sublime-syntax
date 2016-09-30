@@ -4,11 +4,16 @@ name: Swift
 file_extensions:
   - .swift
 scope: source.swift
+
+variables:
+  typeIdent: '[A-Z_][a-zA-Z0-9_]*'
+  ident: '[a-zA-Z_][a-zA-Z0-9_]*'
 contexts:
   main:
     - include: comment
     - include: string
-    - include: class
+    - match: (?=.*\bclass\b)
+      set: class
 ## Comments
   comment:
     - match: //+
@@ -57,6 +62,7 @@ contexts:
 
 ## Class declarations
   class:
+    - meta_content_scope: meta.class.swift
     - include: class-attribute
     - include: class-access-modifier
     - include: class-final
@@ -64,30 +70,62 @@ contexts:
 
   class-attribute:
     - match: (?:@objc|@UIApplicationMain|@NSApplicationMain|@IBDesignable)(?=\s.*class)
-      scope: keyword.other.swift meta.class.swift
-      set: class
+      scope: keyword.other.swift
 
   class-access-modifier:
     - match: (?:open|public|internal|fileprivate|private)(?:\s+(open|public|internal|fileprivate|private))*(?=\s.*class)
-      scope: keyword.other.swift meta.class.swift
+      scope: keyword.other.swift
       captures:
-        1: invalid.illegal
-      set: class
+        1: invalid.illegal.swift
 
   class-final:
     - match: (?:final)(?:\s+(final))*(?=\s.*class)
-      scope: keyword.other.swift meta.class.swift
+      scope: keyword.other.swift
       captures:
-        1: invalid.illegal
-      set: class
+        1: invalid.illegal.swift
 
   class-class:
     - match: class
-      scope: keyword.entity.swift meta.class.swift
+      scope: keyword.entity.swift
       set: class-name
 
   class-name:
-    - match: "hello"
+    - meta_content_scope: meta.class.swift
+    - match: '\b({{typeIdent}})(?:\s*(:)\s*({{typeIdent}})(?:(,)\s*({{typeIdent}}))*)?\s*({)'
+      captures:
+        1: support.class.swift
+        2: punctuation.separator.swift
+        3: support.class.swift
+        4: punctuation.separator.swift
+        5: support.class.swift
+        6: punctuation.section.braces.begin
+      set: class-body
+
+  # class-inherit:
+  #   # - meta_content_scope: meta.class.swift
+  #   - match: ':\s*'
+  #     scope: punctuation.separator.swift
+  #     set: class-type-inherit-list
+  #   - match: '{'
+  #     scope: punctuation.section.braces.begin
+  #     set: class-body
+
+  # class-type-inherit-list:
+  #   - match: '({{typeIdent}})(?:(,)\s*({{typeIdent}}))*\s*({)'
+  #     captures:
+  #       1: support.class.swift
+  #       2: punctuation.separator.swift
+  #       3: support.class.swift
+  #       4: punctuation.section.braces.begin
+  #     set: class-body
+
+  class-body:
+    - meta_scope: meta.braces
+    - meta_content_scope: meta.class.swift
+    - match: '}'
+      scope: punctuation.section.braces.end meta.class.swift
+      pop: true
+
 
 
 
