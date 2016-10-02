@@ -49,6 +49,16 @@ class Mvc : MyClass, MyProtocol { }
 //                               ^ meta.braces
 //                                ^ punctuation.section.braces.end
 
+1.0 + .46
+// <- constant.numeric.float
+//    ^^^ constant.numeric.float
+
+100
+// <- constant.numeric.integer
+
+100 + 2.34
+// <- constant.numeric.integer
+//    ^^^^ constant.numeric.float
 
 
 

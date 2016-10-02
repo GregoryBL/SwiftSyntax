@@ -12,6 +12,8 @@ contexts:
   main:
     - include: comment
     - include: string
+    - include: float
+    - include: integer
     - match: (?=.*\bclass\b)
       set: class
 ## Comments
@@ -59,6 +61,14 @@ contexts:
     - match: \)
       scope: punctuation.section.embedded.end
       set: string-double
+
+  integer:
+    - match: \d+
+      scope: constant.numeric.integer
+
+  float:
+    - match: \d*\.\d+
+      scope: constant.numeric.float
 
 ## Class declarations
   class:
