@@ -29,6 +29,17 @@
 //^^^^^^^                string.quoted.double
 //                       ^ string.quoted.double
 
+{[ (  )] }
+// <- punctuation.section.braces.begin
+ // <- punctuation.section.brackets.begin
+// ^ punctuation.section.parens.begin
+//    ^ punctuation.section.parens.end
+//     ^ punctuation.section.brackets.end
+//       ^ punctuation.section.braces.end
+// ^^^^ meta.parens
+//^^^^^^ meta.brackets
+//^^^^^^^^ meta.braces
+
 @IBDesignable @objc fileprivate private final class MyViewController { }
 // <- keyword.other
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.class
