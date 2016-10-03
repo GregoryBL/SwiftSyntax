@@ -49,17 +49,24 @@ class Mvc : MyClass, MyProtocol { }
 //                               ^ meta.braces
 //                                ^ punctuation.section.braces.end
 
-1.0 + .46
+1.0 + -.46
 // <- constant.numeric.float
-//    ^^^ constant.numeric.float
+//     ^^^ constant.numeric.float
+//  ^ keyword.operator.arithmetic
+//    ^ keyword.operator.arithmetic
 
 100
 // <- constant.numeric.integer
 
-100 + 2.34
+100 / 2.34*40
 // <- constant.numeric.integer
+//  ^ keyword.operator.arithmetic
 //    ^^^^ constant.numeric.float
+//        ^ keyword.operator.arithmetic
+//         ^^ constant.numeric.integer
 
+MyClass.myVar?.myOtherVar.myFunction()
 
+MyClass.myVar?.myOtherVar!.myProperty? = 42
 
 
