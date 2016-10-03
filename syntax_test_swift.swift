@@ -42,25 +42,35 @@
 
 @IBDesignable @objc fileprivate private final class MyViewController { }
 // <- keyword.other
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.class
-// ^^^^^^^^^^ keyword.other
+//                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.class
+//^^^^^^^^^^^ keyword.other
 //            ^^^^^ keyword.other
-//                  ^^^^^^^^^^^ meta.class
+//                  ^^^^^^^^^^^ storage.modifier
 //                              ^^^^^^^ invalid.illegal
-//                                      ^^^^^ keyword.other
-//                                            ^^^^^ keyword.entity
+//                                      ^^^^^ storage.modifier
+//                                            ^^^^^ storage.type.class
 
 class Mvc : MyClass, MyProtocol { }
-// <- keyword.entity
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.class
-//    ^^^ support.class
+// <- storage.type.class
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.class
+//    ^^^ entity.name.class
 //        ^ punctuation.separator
-//          ^^^^^^^ support.class
+//          ^^^^^^^ entity.other.inherited-class
 //                 ^ punctuation.separator
-//                   ^^^^^^^^^^ support.class
-//                              ^ punctuation.section.braces.begin
-//                               ^ meta.braces
-//                                ^ punctuation.section.braces.end
+//                   ^^^^^^^^^^ entity.other.inherited-class
+//                              ^ punctuation.definition.class.body.begin
+//                                ^ punctuation.definition.class.body.end
+
+class MyClass<Key: Hashable, Value>: Array<Array<String>> { }
+//           ^^^^^^^^^^^^^^^^^^^^^^ meta.generic
+//           ^ punctuation.definition.generic.begin
+//            ^^^ variable.other.generic
+//               ^ punctuation.separator
+//                 ^^^^^^^^ variable.other.generic
+//                         ^ punctuation.separator
+//                           ^^^^^ variable.other.generic
+//                                ^ punctuation.definition.generic.end
+//                                                     ^^ punctuation.definition.generic.end
 
 1.0 + -.46
 // <- constant.numeric.float

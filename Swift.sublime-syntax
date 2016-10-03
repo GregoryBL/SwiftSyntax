@@ -131,6 +131,69 @@ contexts:
     - match: \\[0tr"'\\]
       scope: constant.character.escape.swift
 
+  literal-class:
+    # e.g. class MyClass : OtherClass {  }
+    - match: (?<!\.)(?=\bclass\b)
+      push: class_def
+
+  class_def:
+    - meta_scope: meta.class.swift
+    - match: \bclass\b
+      scope: storage.type.class.swift
+      push: [class_body, class_inherits, class_name]
+    - match: (?<=})
+      pop: true
+
+  class_name:
+    - match: (?=\s*:|{)
+      pop: true
+    - match: ({{typeIdent}})
+      scope: entity.name.class.swift
+      set:
+        - include: generic
+        - match: (?=\s*(?>:|>|{))
+          pop: true
+
+  class_inherits:
+    - match: ':'
+      scope: punctuation.separator.swift
+      set:
+        - include: generic
+        - match: (?={)
+          pop: true
+        - match: ({{typeIdent}})
+          scope: entity.other.inherited-class.swift
+        - match: ","
+          scope: punctuation.separator.swift
+    - match: (?={)
+      pop: true
+
+  class_body:
+    - match: '{'
+      scope: punctuation.definition.class.body.begin.swift
+      set:
+        - match: '}'
+          scope: punctuation.definition.class.body.end.swift
+          pop: true
+        - include: class-properties
+        - include: class-method-definition
+        - include: class-method-storage
+        - include: brackets
+
+  generic:
+    - match: '<'
+      scope: punctuation.definition.generic.begin.swift
+      push:
+        - include: generic
+        - meta_scope: meta.generic.swift
+        - match: ',|:'
+          scope: punctuation.separator.swift
+        - match: ({{typeIdent}})
+          scope: variable.other.generic.swift
+        - match: '>'
+          scope: punctuation.definition.generic.end.swift
+          pop: true
+
 #     - include: statement
 
 #   prototype:
