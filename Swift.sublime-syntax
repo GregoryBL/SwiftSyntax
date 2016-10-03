@@ -8,14 +8,21 @@ scope: source.swift
 variables:
   typeIdent: '[A-Z_][a-zA-Z0-9_]*'
   ident: '[a-zA-Z_][a-zA-Z0-9_]*'
+
 contexts:
   main:
     - include: comment
     - include: string
     - include: float
     - include: integer
+    - include: operator
     - match: (?=.*\bclass\b)
-      set: class
+      push: class
+    - include: callee
+    - include: typeIdentifier
+    - include: identifier
+    # - include: memberFunction
+    # - include: memberExpression
 ## Comments
   comment:
     - match: //+
@@ -40,6 +47,44 @@ contexts:
     - match: \*/
       scope: punctuation.definition.comment.end
       pop: true
+
+## Operators
+  operator:
+    - match: '[-+*/%]'
+      scope: keyword.operator.arithmetic
+    - match: (let|var)\s+{{ident}}\s*(=)\s*
+      captures:
+        1: storage.type.swift
+        2: keyword.operator.assignment
+
+  # memberFunction:
+  #   - meta_content_scope: memberFunction
+  #   - match: '(?:({{typeIdent}})|({{ident}})([?!]?))?(?:(.)({{ident}}))*(\()'
+  #     captures:
+  #       1: entity.name.class
+  #       2: variable.other.swift
+  #       3: keyword.operator.optional
+  #       4: punctuation.accessor
+  #       5: variable.member.swift
+  #       6: punctuation.section.parens.begin
+  #     push: functionParameterCallList
+
+  functionParameterCallList:
+    - meta_scope: meta.function-call
+    - meta_content_scope: meta.parens
+    - match: \)
+      scope: punctuation.section.parens.end
+      pop: true
+
+  # memberExpression:
+  #   - match: '(?:(?:({{typeIdent}})|({{ident}})([?!]?)?))?(?:(.)({{ident}})([?!]?))+'
+  #     captures:
+  #       1: entity.name.class
+  #       2: variable.other.swift
+  #       3: keyword.operator.optional
+  #       4: punctuation.accessor
+  #       5: variable.member.swift
+  #       6: keyword.operator.optional
 
 ## Literals
   string:
@@ -100,7 +145,7 @@ contexts:
       set: class-name
 
   class-name:
-    - meta_content_scope: meta.class.swift
+    - meta_scope: meta.class.swift
     - match: '\b({{typeIdent}})(?:\s*(:)\s*({{typeIdent}})(?:(,)\s*({{typeIdent}}))*)?\s*({)'
       captures:
         1: support.class.swift
