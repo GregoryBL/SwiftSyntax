@@ -44,6 +44,30 @@ contexts:
     - include: literal-operators
     - include: literal-variable
 
+  comments:
+    - match: //+
+      scope: punctuation.definition.comment
+      push: line-comment
+    - match: /\*
+      scope: punctuation.definition.comment.begin
+      push: block-comment
+
+  line-comment:
+    - meta_scope: comment.line
+    - match: ' *(MARK:)(.*)'
+      captures:
+        1: punctuation.definition.comment
+        2: meta.toc-list
+      pop: true
+    - match: .*
+      pop: true
+
+  block-comment:
+    - meta_scope: comment.block
+    - match: \*/
+      scope: punctuation.definition.comment.end
+      pop: true
+
   brackets:
     - include: round-brackets
     - include: square-brackets
@@ -54,6 +78,58 @@ contexts:
       scope: punctuation.section.parens.begin.swift
       push:
         - meta_scope: meta.parens.swift
+        - match: \)
+          scope: punctuation.section.parens.end.swift
+          pop: true
+        - include: expression
+
+  square-brackets:
+    - match: \[
+      scope: punctuation.section.brackets.begin.swift
+      push:
+        - meta_scope: meta.brackets.swift
+        - match: \]
+          scope: punctuation.section.brackets.end.swift
+          pop: true
+        - include: expression
+
+  curly-brackets:
+    - match: '{'
+      scope: punctuation.section.braces.begin.swift
+      push:
+        - meta_scope: meta.braces.swift
+        - match: '}'
+          scope: punctuation.section.braces.end.swift
+          pop: true
+        - include: expression
+
+  literal-string:
+    - match: '"'
+      scope: punctuation.definition.string.begin.swift
+      push: string-double
+
+  string-double:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.double.swift
+    - match: \\\(
+      scope: punctuation.section.embedded.begin.swift
+      set: embedded
+    - match: '"'
+      scope: punctuation.definition.string.end.swift
+      pop: true
+    - include: string-content
+
+  embedded:
+    - match: \)
+      scope: punctuation.section.embedded.end.swift
+      set: string-double
+    - include: main
+
+  string-content:
+    - match: \\n
+      scope: constant.character.escape.newline.swift
+    - match: \\[0tr"'\\]
+      scope: constant.character.escape.swift
 
 #     - include: statement
 
@@ -87,29 +163,7 @@ contexts:
 
 
 # ## Comments
-#   comment:
-#     - match: //+
-#       scope: punctuation.definition.comment
-#       push: line-comment
-#     - match: /\*
-#       scope: punctuation.definition.comment.begin
-#       push: block-comment
 
-#   line-comment:
-#     - meta_scope: comment.line
-#     - match: ' *(MARK:)(.*)'
-#       captures:
-#         1: punctuation.definition.comment
-#         2: meta.toc-list
-#       pop: true
-#     - match: .*
-#       pop: true
-
-#   block-comment:
-#     - meta_scope: comment.block
-#     - match: \*/
-#       scope: punctuation.definition.comment.end
-#       pop: true
 
 # ## Loops
 #   loop:
@@ -146,21 +200,7 @@ contexts:
 #         1: storage.type.swift
 #         2: keyword.operator.assignment
 
-# ## Strings
-#   string-double:
-#     - meta_scope: string.quoted.double
-#     - match: \\\(
-#       scope: punctuation.section.embedded.begin
-#       set: embedded
-#     - match: '"'
-#       scope: punctuation.definition.string.end
-#       pop: true
 
-#   embedded:
-#     - match: \)
-#       scope: punctuation.section.embedded.end
-#       set: string-double
-#     # - include: main
 
 # ## Class declarations
 #   class:

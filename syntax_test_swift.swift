@@ -13,11 +13,13 @@
 //^^^^^^^^^^^^^^^^^^^^ comment.block
 //                  ^^ punctuation.definition.comment.end
 
-"This is a string"
+"This is a string \n \"\'\\\t\r"
 // <- punctuation.definition.string.begin
 // <- string.quoted.double
-//^^^^^^^^^^^^^^^^ string.quoted.double
-//               ^ punctuation.definition.string.end
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ string.quoted.double
+//                             ^ punctuation.definition.string.end
+//                ^^ constant.character.escape.newline
+//                   ^^^^^^^^^^ constant.character.escape
 
 
 "Length: \( line.length )"
