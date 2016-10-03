@@ -13,11 +13,13 @@
 //^^^^^^^^^^^^^^^^^^^^ comment.block
 //                  ^^ punctuation.definition.comment.end
 
-"This is a string"
+"This is a string \n \"\'\\\t\r"
 // <- punctuation.definition.string.begin
 // <- string.quoted.double
-//^^^^^^^^^^^^^^^^ string.quoted.double
-//               ^ punctuation.definition.string.end
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ string.quoted.double
+//                             ^ punctuation.definition.string.end
+//                ^^ constant.character.escape.newline
+//                   ^^^^^^^^^^ constant.character.escape
 
 
 "Length: \( line.length )"
@@ -26,6 +28,17 @@
 //                      ^ punctuation.section.embedded.end
 //^^^^^^^                string.quoted.double
 //                       ^ string.quoted.double
+
+{[ (  )] }
+// <- punctuation.section.braces.begin
+ // <- punctuation.section.brackets.begin
+// ^ punctuation.section.parens.begin
+//    ^ punctuation.section.parens.end
+//     ^ punctuation.section.brackets.end
+//       ^ punctuation.section.braces.end
+// ^^^^ meta.parens
+//^^^^^^ meta.brackets
+//^^^^^^^^ meta.braces
 
 @IBDesignable @objc fileprivate private final class MyViewController { }
 // <- keyword.other
@@ -64,6 +77,12 @@ class Mvc : MyClass, MyProtocol { }
 //    ^^^^ constant.numeric.float
 //        ^ keyword.operator.arithmetic
 //         ^^ constant.numeric.integer
+
+for x in array {
+
+}
+
+while 
 
 MyClass.myVar?.myOtherVar.myFunction()
 
