@@ -65,6 +65,12 @@ class Mvc : MyClass, MyProtocol { }
 //        ^ keyword.operator.arithmetic
 //         ^^ constant.numeric.integer
 
+for x in array {
+
+}
+
+while 
+
 MyClass.myVar?.myOtherVar.myFunction()
 
 MyClass.myVar?.myOtherVar!.myProperty? = 42
