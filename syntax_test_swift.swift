@@ -94,6 +94,18 @@ struct MyStruct: Protocol, Other { }
 //                               ^ punctuation.definition.struct.body.begin
 //                                 ^ punctuation.definition.struct.body.end
 
+enum MyEnum<T>: Protocol, Other { }
+// <- storage.type.enum
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.enum
+//   ^^^^^^ entity.name.class
+//         ^^^ meta.generic
+//            ^ punctuation.separator
+//              ^^^^^^^ entity.other.inherited-class
+//                      ^ punctuation.separator
+//                        ^^^^^ entity.other.inherited-class
+//                              ^ punctuation.definition.enum.body.begin
+//                                ^ punctuation.definition.enum.body.end
+
 1.0 + -.46
 // <- constant.numeric.float
 //     ^^^ constant.numeric.float
