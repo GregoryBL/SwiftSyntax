@@ -83,6 +83,17 @@ protocol MyProtocol: class, Other { }
 //                                ^ punctuation.definition.protocol.body.begin
 //                                  ^ punctuation.definition.protocol.body.end
 
+struct MyStruct: Protocol, Other { }
+// <- storage.type.struct
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.struct
+//     ^^^^^^^^ entity.name.class
+//             ^ punctuation.separator
+//               ^^^^^^^ entity.other.inherited-class
+//                       ^ punctuation.separator
+//                         ^^^^^ entity.other.inherited-class
+//                               ^ punctuation.definition.struct.body.begin
+//                                 ^ punctuation.definition.struct.body.end
+
 1.0 + -.46
 // <- constant.numeric.float
 //     ^^^ constant.numeric.float

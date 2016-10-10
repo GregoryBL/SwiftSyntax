@@ -243,6 +243,53 @@ contexts:
         - include: protocol-method-storage
         - include: brackets
 
+  literal-struct:
+    # e.g. struct Mystruct {  }
+    - match: (?<!\.)(?=\bstruct\b)
+      push: struct_def
+
+  struct_def:
+    - meta_scope: meta.struct.swift
+    - match: \bstruct\b
+      scope: storage.type.struct.swift
+      push: [struct_body, struct_inherits, struct_name]
+    - match: (?<=})
+      pop: true
+
+  struct_name:
+    - match: (?=\s*:|{)
+      pop: true
+    - match: ({{typeIdent}})
+      scope: entity.name.class.swift
+      set:
+        - match: (?=\s*(?>:|>|{))
+          pop: true
+
+  struct_inherits:
+    - match: ':'
+      scope: punctuation.separator.swift
+      set:
+        - match: (?={)
+          pop: true
+        - match: ({{typeIdent}})
+          scope: entity.other.inherited-class.swift
+        - match: ","
+          scope: punctuation.separator.swift
+    - match: (?={)
+      pop: true
+
+  struct_body:
+    - match: '{'
+      scope: punctuation.definition.struct.body.begin.swift
+      set:
+        - match: '}'
+          scope: punctuation.definition.struct.body.end.swift
+          pop: true
+        - include: struct-properties
+        - include: struct-method-definition
+        - include: struct-method-storage
+        - include: brackets
+
 #     - include: statement
 
 #   prototype:
