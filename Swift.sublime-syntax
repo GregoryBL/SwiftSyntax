@@ -213,6 +213,7 @@ contexts:
     - match: ({{typeIdent}})
       scope: entity.name.class.swift
       set:
+        - include: generic
         - match: (?=\s*(?>:|>|{))
           pop: true
 
@@ -262,6 +263,7 @@ contexts:
     - match: ({{typeIdent}})
       scope: entity.name.class.swift
       set:
+        - include: generic
         - match: (?=\s*(?>:|>|{))
           pop: true
 
@@ -289,6 +291,51 @@ contexts:
         - include: struct-method-definition
         - include: struct-method-storage
         - include: brackets
+
+  literal-enum:
+    # e.g. enum MyEnum {  }
+    - match: (?<!\.)(?=\benum\b)
+      push: enum_def
+
+  enum_def:
+    - meta_scope: meta.enum.swift
+    - match: \benum\b
+      scope: storage.type.enum.swift
+      push: [enum_body, enum_inherits, enum_name]
+    - match: (?<=})
+      pop: true
+
+  enum_name:
+    - match: (?=\s*:|{)
+      pop: true
+    - match: ({{typeIdent}})
+      scope: entity.name.class.swift
+      set:
+        - include: generic
+        - match: (?=\s*(?>:|>|{))
+          pop: true
+
+  enum_inherits:
+    - match: ':'
+      scope: punctuation.separator.swift
+      set:
+        - match: (?={)
+          pop: true
+        - match: ({{typeIdent}})
+          scope: entity.other.inherited-class.swift
+        - match: ","
+          scope: punctuation.separator.swift
+    - match: (?={)
+      pop: true
+
+  enum_body:
+    - match: '{'
+      scope: punctuation.definition.enum.body.begin.swift
+      set:
+        - match: '}'
+          scope: punctuation.definition.enum.body.end.swift
+          pop: true
+        - include: enum-cases
 
 #     - include: statement
 
