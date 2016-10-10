@@ -72,6 +72,17 @@ class MyClass<Key: Hashable, Value>: Array<Array<String>> { }
 //                                ^ punctuation.definition.generic.end
 //                                                     ^^ punctuation.definition.generic.end
 
+protocol MyProtocol: class, Other { }
+// <- storage.type.protocol
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.protocol
+//       ^^^^^^^^^^ entity.name.class
+//                 ^ punctuation.separator
+//                   ^^^^^ keyword.other
+//                        ^ punctuation.separator
+//                          ^^^^^ entity.other.inherited-class
+//                                ^ punctuation.definition.protocol.body.begin
+//                                  ^ punctuation.definition.protocol.body.end
+
 1.0 + -.46
 // <- constant.numeric.float
 //     ^^^ constant.numeric.float

@@ -194,6 +194,55 @@ contexts:
           scope: punctuation.definition.generic.end.swift
           pop: true
 
+  literal-protocol:
+    # e.g. protocol MyProtocol {  }
+    - match: (?<!\.)(?=\bprotocol\b)
+      push: protocol_def
+
+  protocol_def:
+    - meta_scope: meta.protocol.swift
+    - match: \bprotocol\b
+      scope: storage.type.protocol.swift
+      push: [protocol_body, protocol_inherits, protocol_name]
+    - match: (?<=})
+      pop: true
+
+  protocol_name:
+    - match: (?=\s*:|{)
+      pop: true
+    - match: ({{typeIdent}})
+      scope: entity.name.class.swift
+      set:
+        - match: (?=\s*(?>:|>|{))
+          pop: true
+
+  protocol_inherits:
+    - match: ':'
+      scope: punctuation.separator.swift
+      set:
+        - match: (?={)
+          pop: true
+        - match: class
+          scope: keyword.other.swift
+        - match: ({{typeIdent}})
+          scope: entity.other.inherited-class.swift
+        - match: ","
+          scope: punctuation.separator.swift
+    - match: (?={)
+      pop: true
+
+  protocol_body:
+    - match: '{'
+      scope: punctuation.definition.protocol.body.begin.swift
+      set:
+        - match: '}'
+          scope: punctuation.definition.protocol.body.end.swift
+          pop: true
+        - include: protocol-properties
+        - include: protocol-method-definition
+        - include: protocol-method-storage
+        - include: brackets
+
 #     - include: statement
 
 #   prototype:
