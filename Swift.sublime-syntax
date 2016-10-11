@@ -133,6 +133,42 @@ contexts:
     - match: \\[0tr"'\\]
       scope: constant.character.escape.swift
 
+  literal-for:
+    - match: (?<!\.)\bfor\b
+      scope: keyword.control.loop.swift
+
+  literal-switch:
+    - match: (?<!\.)\bswitch\b
+      scope: keyword.control.switch.swift
+      push:
+        - meta_scope: meta.switch.swift
+        - match: \}
+          scope: punctuation.section.braces.end.swift
+          pop: true
+        - match: \{
+          scope: punctuation.section.braces.begin.swift
+          push:
+            - match: (?=})
+              pop: true
+            - match: (?<!\.)\b(case|default)\b
+              scope: keyword.control.switch.swift
+              push:
+                - match: ':'
+                  pop: true
+                - match: \,
+                  scope: punctuation.separator.swift
+
+  literal-keywords:
+    - match: (?<!\.)\b(?>if|else)\b
+      scope: keyword.control.conditional.swift
+    - match: (?<!\.)\b(?>continue|break|fallthrough)\b
+      scope: keyword.control.transfer.swift
+    - match: (?<!\.)\breturn\b
+      scope: keyword.control.flow.swift
+    - match: (?<!\.)\b(?>while|repeat)\b
+      scope: keyword.control.loop.swift
+    - match: (?<!\.)\b(?>@available|)
+
   literal-class:
     # e.g. class MyClass : OtherClass {  }
     - match: (?<!\.)(?=\bclass\b)
@@ -196,41 +232,148 @@ contexts:
           scope: punctuation.definition.generic.end.swift
           pop: true
 
-  literal-for:
-    - match: (?<!\.)\bfor\b
-      scope: keyword.control.loop.swift
+  literal-protocol:
+    # e.g. protocol MyProtocol {  }
+    - match: (?<!\.)(?=\bprotocol\b)
+      push: protocol_def
 
-  literal-switch:
-    - match: (?<!\.)\bswitch\b
-      scope: keyword.control.switch.swift
-      push:
-        - meta_scope: meta.switch.swift
-        - match: \}
-          scope: punctuation.section.braces.end.swift
+  protocol_def:
+    - meta_scope: meta.protocol.swift
+    - match: \bprotocol\b
+      scope: storage.type.protocol.swift
+      push: [protocol_body, protocol_inherits, protocol_name]
+    - match: (?<=})
+      pop: true
+
+  protocol_name:
+    - match: (?=\s*:|{)
+      pop: true
+    - match: ({{typeIdent}})
+      scope: entity.name.class.swift
+      set:
+        - include: generic
+        - match: (?=\s*(?>:|>|{))
           pop: true
-        - match: \{
-          scope: punctuation.section.braces.begin.swift
-          push:
-            - match: (?=})
-              pop: true
-            - match: (?<!\.)\b(case|default)\b
-              scope: keyword.control.switch.swift
-              push:
-                - match: ':'
-                  pop: true
-                - match: \,
-                  scope: punctuation.separator.swift
 
-  literal-keywords:
-    - match: (?<!\.)\b(?>if|else)\b
-      scope: keyword.control.conditional.swift
-    - match: (?<!\.)\b(?>continue|break|fallthrough)\b
-      scope: keyword.control.transfer.swift
-    - match: (?<!\.)\breturn\b
-      scope: keyword.control.flow.swift
-    - match: (?<!\.)\b(?>while|repeat)\b
-      scope: keyword.control.loop.swift
-    - match: (?<!\.)\b(?>@available|)
+  protocol_inherits:
+    - match: ':'
+      scope: punctuation.separator.swift
+      set:
+        - match: (?={)
+          pop: true
+        - match: class
+          scope: keyword.other.swift
+        - match: ({{typeIdent}})
+          scope: entity.other.inherited-class.swift
+        - match: ","
+          scope: punctuation.separator.swift
+    - match: (?={)
+      pop: true
+
+  protocol_body:
+    - match: '{'
+      scope: punctuation.definition.protocol.body.begin.swift
+      set:
+        - match: '}'
+          scope: punctuation.definition.protocol.body.end.swift
+          pop: true
+        - include: protocol-properties
+        - include: protocol-method-definition
+        - include: protocol-method-storage
+        - include: brackets
+
+  literal-struct:
+    # e.g. struct MyStruct {  }
+    - match: (?<!\.)(?=\bstruct\b)
+      push: struct_def
+
+  struct_def:
+    - meta_scope: meta.struct.swift
+    - match: \bstruct\b
+      scope: storage.type.struct.swift
+      push: [struct_body, struct_inherits, struct_name]
+    - match: (?<=})
+      pop: true
+
+  struct_name:
+    - match: (?=\s*:|{)
+      pop: true
+    - match: ({{typeIdent}})
+      scope: entity.name.class.swift
+      set:
+        - include: generic
+        - match: (?=\s*(?>:|>|{))
+          pop: true
+
+  struct_inherits:
+    - match: ':'
+      scope: punctuation.separator.swift
+      set:
+        - match: (?={)
+          pop: true
+        - match: ({{typeIdent}})
+          scope: entity.other.inherited-class.swift
+        - match: ","
+          scope: punctuation.separator.swift
+    - match: (?={)
+      pop: true
+
+  struct_body:
+    - match: '{'
+      scope: punctuation.definition.struct.body.begin.swift
+      set:
+        - match: '}'
+          scope: punctuation.definition.struct.body.end.swift
+          pop: true
+        - include: struct-properties
+        - include: struct-method-definition
+        - include: struct-method-storage
+        - include: brackets
+
+  literal-enum:
+    # e.g. enum MyEnum {  }
+    - match: (?<!\.)(?=\benum\b)
+      push: enum_def
+
+  enum_def:
+    - meta_scope: meta.enum.swift
+    - match: \benum\b
+      scope: storage.type.enum.swift
+      push: [enum_body, enum_inherits, enum_name]
+    - match: (?<=})
+      pop: true
+
+  enum_name:
+    - match: (?=\s*:|{)
+      pop: true
+    - match: ({{typeIdent}})
+      scope: entity.name.class.swift
+      set:
+        - include: generic
+        - match: (?=\s*(?>:|>|{))
+          pop: true
+
+  enum_inherits:
+    - match: ':'
+      scope: punctuation.separator.swift
+      set:
+        - match: (?={)
+          pop: true
+        - match: ({{typeIdent}})
+          scope: entity.other.inherited-class.swift
+        - match: ","
+          scope: punctuation.separator.swift
+    - match: (?={)
+      pop: true
+
+  enum_body:
+    - match: '{'
+      scope: punctuation.definition.enum.body.begin.swift
+      set:
+        - match: '}'
+          scope: punctuation.definition.enum.body.end.swift
+          pop: true
+        - include: enum-cases
 
 #     - include: statement
 
