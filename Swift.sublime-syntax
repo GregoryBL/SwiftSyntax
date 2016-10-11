@@ -133,6 +133,8 @@ contexts:
     - match: \\[0tr"'\\]
       scope: constant.character.escape.swift
 
+  ##### KEYWORDS #####
+
   literal-for:
     - match: (?<!\.)\bfor\b
       scope: keyword.control.loop.swift
@@ -167,12 +169,35 @@ contexts:
       scope: keyword.control.flow.swift
     - match: (?<!\.)\b(?>while|repeat)\b
       scope: keyword.control.loop.swift
-    - match: (?<!\.)\b(?>@available|)
+    - include: declaration-attributes
+    - include: declaration-modifiers
+    - include: type-attributes
+    - include: access-attributes
+
+  declaration-attributes:
+    - match: (@)(?>available|discardableResult|GKInspectable|objc|nonobjc|NSApplicationMain|NSCopying|NSManaged|testable|UIApplicationMain|IBAction|IBOutlet|IBDesignable|IBInspectable)
+      scope: keyword.other.swift
+      captures:
+        1: punctuation.definition.keyword.swift
+
+  declaration-modifiers:
+    - match: (?>dynamic|final|lazy|optional|required|weak)
+      scope: storage.modifier.swift
+
+  type-attributes:
+    - match: (?>autoclosure|convention|escaping)
+      scope: keyword.other.swift
+
+  access-attributes:
+    - match: (?>open|public|internal|fileprivate|private)
+      scope: storage.modifier.swift
 
   literal-class:
     # e.g. class MyClass : OtherClass {  }
     - match: (?<!\.)(?=\bclass\b)
       push: class_def
+
+  ##### CLASS DECLARATIONS #####
 
   class_def:
     - meta_scope: meta.class.swift

@@ -40,15 +40,15 @@
 //^^^^^^ meta.brackets
 //^^^^^^^^ meta.braces
 
-@IBDesignable @objc fileprivate private final class MyViewController { }
+@IBDesignable @objc fileprivate final class MyViewController { }
+// <- punctuation.definition.keyword
 // <- keyword.other
-//                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.class
+//                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.class
 //^^^^^^^^^^^ keyword.other
 //            ^^^^^ keyword.other
 //                  ^^^^^^^^^^^ storage.modifier
-//                              ^^^^^^^ invalid.illegal
-//                                      ^^^^^ storage.modifier
-//                                            ^^^^^ storage.type.class
+//                              ^^^^^ storage.modifier
+//                                    ^^^^^ storage.type.class
 
 class Mvc : MyClass, MyProtocol { }
 // <- storage.type.class
@@ -134,6 +134,8 @@ switch MyEnum {
   default:
     print("hi")
 }
+
+while 
 
 MyClass.myVar?.myOtherVar.myFunction()
 
