@@ -161,6 +161,30 @@ contexts:
     - match: \bself\b
       scope: variable.language.self.swift
 
+  literal-operators:
+    - match: '[-+*/%]|&\*|&/|&%|&\+|&-'
+      scope: keyword.operator.arithmetic.swift
+    - match: ==|!=|===|!==|<=|>=|<|>
+      scope: keyword.operator.logical.comparison.swift
+    - match: '\|\||&&'
+      scope: keyword.operator.logical.swift
+    - match: '[!~](?=(?:[a-zA-Z]|{{ident}}))'
+      scope: keyword.operator.logical.swift
+    - match: '<<|>>|&|/|^'
+      scope: keyword.operator.bitwise.swift
+    - match: '~='
+      scope: keyword.operator.match.swift
+    - match: '\?\?'
+      scope: keyword.operator.nilcoalescing.swift
+    - match: '\s+(\?)\s+(?=.*:)'
+      captures:
+        1: keyword.control.conditional.ternary.swift
+      push:
+        - match: ':'
+          scope: keyword.control.conditional.ternary.swift
+          pop: true
+        - include: expression
+
   ##### KEYWORDS #####
 
   literal-for:
@@ -184,6 +208,7 @@ contexts:
               scope: keyword.control.switch.swift
               push:
                 - match: ':'
+                  scope: punctuation.separator.swift
                   pop: true
                 - match: \,
                   scope: punctuation.separator.swift
@@ -220,12 +245,12 @@ contexts:
     - match: (?>open|public|internal|fileprivate|private)
       scope: storage.modifier.swift
 
+  ##### CLASS DECLARATIONS #####
+
   literal-class:
     # e.g. class MyClass : OtherClass {  }
     - match: (?<!\.)(?=\bclass\b)
       push: class_def
-
-  ##### CLASS DECLARATIONS #####
 
   class_def:
     - meta_scope: meta.class.swift
@@ -272,10 +297,11 @@ contexts:
         - include: brackets
 
   ##### GENERIC DECLARATION #####
-
+  ## This could use work
   generic:
-    - match: '<'
-      scope: punctuation.definition.generic.begin.swift
+    - match: '(<)\s*(?={{typeIdent}}\s*(?:(?:[:,<]\s*{{typeIdent}})*\s*>))'
+      captures:
+        1: punctuation.definition.generic.begin.swift
       push:
         - include: generic
         - meta_scope: meta.generic.swift
@@ -439,34 +465,7 @@ contexts:
           pop: true
         - include: enum-cases
 
-#     - include: statement
-
-#   prototype:
-#     - include: comment
-
-# ## Operators
-#   operator:
-#     - match: '[-+*/%]'
-#       scope: keyword.operator.arithmetic
 #     - match: (let|var)\s+{{ident}}\s*(=)\s*
 #       captures:
 #         1: storage.type.swift
 #         2: keyword.operator.assignment
-
-# ## Function Declaration
-
-# ## Utility Grabbers
-#   get-ident:
-#     - match: '{{ident}}'
-#       scope: variable.other.swift
-#       pop: true
-
-#   get-type-ident:
-#     - match: '{{typeIdent}}'
-#       scope: support.type.swift
-#       pop: true
-
-
-
-
-
