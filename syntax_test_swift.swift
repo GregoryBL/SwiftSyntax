@@ -106,6 +106,13 @@ enum MyEnum<T>: Protocol, Other { }
 //                              ^ punctuation.definition.enum.body.begin
 //                                ^ punctuation.definition.enum.body.end
 
+let x: String = "hello"
+//     ^^^^^^ support.class
+
+var y: Array<String> = ["hello"]
+//     ^^^^^ support.class
+//          ^^^^^^^^ meta.generic
+
 1.0 + -.46
 // <- constant.numeric.float
 //     ^^^ constant.numeric.float
