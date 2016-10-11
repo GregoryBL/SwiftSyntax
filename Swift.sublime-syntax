@@ -284,7 +284,7 @@ contexts:
   ##### GENERIC DECLARATION #####
   ## This could use work
   generic:
-    - match: '(<)\s*(?={{typeIdent}}\s*(?:[:,]\s*{{typeIdent}})*>)|<'
+    - match: '(<)\s*(?={{typeIdent}}\s*(?:(?:[:,<]\s*{{typeIdent}})*\s*>))'
       captures:
         1: punctuation.definition.generic.begin.swift
       push:

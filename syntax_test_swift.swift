@@ -171,6 +171,9 @@ while x == y { }
 //      ^^ keyword.operator.logical
 
 x < 2 && y > 3
+//^ keyword.operator.logical
+//    ^^ keyword.operator.logical
+//         ^ keyword.operator.logical
 
 MyClass.myVar?.myOtherVar.myFunction()
 
