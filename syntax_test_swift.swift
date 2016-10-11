@@ -40,15 +40,15 @@
 //^^^^^^ meta.brackets
 //^^^^^^^^ meta.braces
 
-@IBDesignable @objc fileprivate private final class MyViewController { }
+@IBDesignable @objc fileprivate final class MyViewController { }
+// <- punctuation.definition.keyword
 // <- keyword.other
-//                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.class
+//                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.class
 //^^^^^^^^^^^ keyword.other
 //            ^^^^^ keyword.other
 //                  ^^^^^^^^^^^ storage.modifier
-//                              ^^^^^^^ invalid.illegal
-//                                      ^^^^^ storage.modifier
-//                                            ^^^^^ storage.type.class
+//                              ^^^^^ storage.modifier
+//                                    ^^^^^ storage.type.class
 
 class Mvc : MyClass, MyProtocol { }
 // <- storage.type.class
@@ -124,6 +124,15 @@ enum MyEnum<T>: Protocol, Other { }
 
 for x in array {
 
+}
+
+switch MyEnum {
+  case .hello:
+    doSomething();
+  case .goodbye:
+    doSomethingElse();
+  default:
+    print("hi")
 }
 
 while 

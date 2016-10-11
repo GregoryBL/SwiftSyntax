@@ -31,6 +31,8 @@ contexts:
     - include: literal-protocol
     - include: literal-enum
 
+    - include: literal-keywords
+
     - include: literal-number
     - include: literal-string
     - include: literal-language-constant
@@ -131,10 +133,71 @@ contexts:
     - match: \\[0tr"'\\]
       scope: constant.character.escape.swift
 
+  ##### KEYWORDS #####
+
+  literal-for:
+    - match: (?<!\.)\bfor\b
+      scope: keyword.control.loop.swift
+
+  literal-switch:
+    - match: (?<!\.)\bswitch\b
+      scope: keyword.control.switch.swift
+      push:
+        - meta_scope: meta.switch.swift
+        - match: \}
+          scope: punctuation.section.braces.end.swift
+          pop: true
+        - match: \{
+          scope: punctuation.section.braces.begin.swift
+          push:
+            - match: (?=})
+              pop: true
+            - match: (?<!\.)\b(case|default)\b
+              scope: keyword.control.switch.swift
+              push:
+                - match: ':'
+                  pop: true
+                - match: \,
+                  scope: punctuation.separator.swift
+
+  literal-keywords:
+    - match: (?<!\.)\b(?>if|else)\b
+      scope: keyword.control.conditional.swift
+    - match: (?<!\.)\b(?>continue|break|fallthrough)\b
+      scope: keyword.control.transfer.swift
+    - match: (?<!\.)\breturn\b
+      scope: keyword.control.flow.swift
+    - match: (?<!\.)\b(?>while|repeat)\b
+      scope: keyword.control.loop.swift
+    - include: declaration-attributes
+    - include: declaration-modifiers
+    - include: type-attributes
+    - include: access-attributes
+
+  declaration-attributes:
+    - match: (@)(?>available|discardableResult|GKInspectable|objc|nonobjc|NSApplicationMain|NSCopying|NSManaged|testable|UIApplicationMain|IBAction|IBOutlet|IBDesignable|IBInspectable)
+      scope: keyword.other.swift
+      captures:
+        1: punctuation.definition.keyword.swift
+
+  declaration-modifiers:
+    - match: (?>dynamic|final|lazy|optional|required|weak)
+      scope: storage.modifier.swift
+
+  type-attributes:
+    - match: (?>autoclosure|convention|escaping)
+      scope: keyword.other.swift
+
+  access-attributes:
+    - match: (?>open|public|internal|fileprivate|private)
+      scope: storage.modifier.swift
+
   literal-class:
     # e.g. class MyClass : OtherClass {  }
     - match: (?<!\.)(?=\bclass\b)
       push: class_def
+
+  ##### CLASS DECLARATIONS #####
 
   class_def:
     - meta_scope: meta.class.swift
@@ -245,7 +308,7 @@ contexts:
         - include: brackets
 
   literal-struct:
-    # e.g. struct Mystruct {  }
+    # e.g. struct MyStruct {  }
     - match: (?<!\.)(?=\bstruct\b)
       push: struct_def
 
