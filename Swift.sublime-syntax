@@ -162,13 +162,28 @@ contexts:
       scope: variable.language.self.swift
 
   literal-operators:
-    - match: '[-+*/%]'
+    - match: '[-+*/%]|&\*|&/|&%|&\+|&-'
       scope: keyword.operator.arithmetic.swift
     - match: ==|!=|===|!==|<=|>=|<|>
       scope: keyword.operator.logical.comparison.swift
     - match: '\|\||&&'
       scope: keyword.operator.logical.swift
-    # - match: 
+    - match: '[!~](?=(?:[a-zA-Z]|{{ident}}))'
+      scope: keyword.operator.logical.swift
+    - match: '<<|>>|&|/|^'
+      scope: keyword.operator.bitwise.swift
+    - match: '~='
+      scope: keyword.operator.match.swift
+    - match: '\?\?'
+      scope: keyword.operator.nilcoalescing.swift
+    - match: '\s+(\?)\s+(?=.*:)'
+      captures:
+        1: keyword.control.conditional.ternary.swift
+      push:
+        - match: ':'
+          scope: keyword.control.conditional.ternary.swift
+          pop: true
+        - include: expression
 
   ##### KEYWORDS #####
 
@@ -230,12 +245,12 @@ contexts:
     - match: (?>open|public|internal|fileprivate|private)
       scope: storage.modifier.swift
 
+  ##### CLASS DECLARATIONS #####
+
   literal-class:
     # e.g. class MyClass : OtherClass {  }
     - match: (?<!\.)(?=\bclass\b)
       push: class_def
-
-  ##### CLASS DECLARATIONS #####
 
   class_def:
     - meta_scope: meta.class.swift

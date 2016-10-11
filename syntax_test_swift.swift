@@ -175,6 +175,10 @@ x < 2 && y > 3
 //    ^^ keyword.operator.logical
 //         ^ keyword.operator.logical
 
+a ? b : nil
+//^ keyword.control.conditional.ternary
+//    ^ keyword.control.conditional.ternary
+
 MyClass.myVar?.myOtherVar.myFunction()
 
 MyClass.myVar?.myOtherVar!.myProperty? = 42
