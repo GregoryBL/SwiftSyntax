@@ -146,17 +146,29 @@ true false nil
 //         ^^^ constant.language.nil
 
 for x in array { }
+// <- keyword.control.loop
 
 switch MyEnum {
+// <- keyword.control.switch
+//            ^ punctuation.section.braces.begin
   case .hello:
-    doSomething();
+//^^^^ keyword.control.switch
+//           ^ punctuation.separator
+    doSomething()
   case .goodbye:
-    doSomethingElse();
+//^^^^ keyword.control.switch
+//             ^ punctuation.separator
+    doSomethingElse()
   default:
+//^^^^^^^ keyword.control.switch
+//       ^ punctuation.separator
     print("hi")
 }
+// <- punctuation.section.braces.end
 
-while 
+while x == y { }
+// <- keyword.control.loop
+//      ^^ keyword.operator.logical
 
 MyClass.myVar?.myOtherVar.myFunction()
 
