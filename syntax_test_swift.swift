@@ -170,6 +170,8 @@ while x == y { }
 // <- keyword.control.loop
 //      ^^ keyword.operator.logical
 
+x < 2 && y > 3
+
 MyClass.myVar?.myOtherVar.myFunction()
 
 MyClass.myVar?.myOtherVar!.myProperty? = 42

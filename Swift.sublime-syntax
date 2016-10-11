@@ -164,8 +164,11 @@ contexts:
   literal-operators:
     - match: '[-+*/%]'
       scope: keyword.operator.arithmetic.swift
-    - match: ==|!=|===|!==
+    - match: ==|!=|===|!==|<=|>=|<|>
+      scope: keyword.operator.logical.comparison.swift
+    - match: '\|\||&&'
       scope: keyword.operator.logical.swift
+    # - match: 
 
   ##### KEYWORDS #####
 
@@ -279,10 +282,11 @@ contexts:
         - include: brackets
 
   ##### GENERIC DECLARATION #####
-
+  ## This could use work
   generic:
-    - match: '<'
-      scope: punctuation.definition.generic.begin.swift
+    - match: '(<)\s*(?={{typeIdent}}\s*(?:[:,]\s*{{typeIdent}})*>)|<'
+      captures:
+        1: punctuation.definition.generic.begin.swift
       push:
         - include: generic
         - meta_scope: meta.generic.swift
