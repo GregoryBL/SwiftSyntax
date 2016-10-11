@@ -129,6 +129,14 @@ var y: Array<String> = ["hello"]
 //        ^ keyword.operator.arithmetic
 //         ^^ constant.numeric.integer
 
+0x42ab 0x3g 0b01 0o26 0o8
+// <- constant.numeric.hex
+//     ^^^^ -constant.numeric.hex
+//          ^^^^ constant.numeric.binary
+//               ^^^^ constant.numeric.octal
+//                    ^^^ -constant.numeric.octal
+
+
 for x in array {
 
 }
