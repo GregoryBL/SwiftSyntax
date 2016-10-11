@@ -22,8 +22,8 @@ contexts:
     - include: comments
 
   expression:
+    - include: generic
     - include: support-class
-    - include: support-other
 
     - include: literal-function
     - include: literal-class
@@ -243,6 +243,8 @@ contexts:
         - include: class-method-storage
         - include: brackets
 
+  ##### GENERIC DECLARATION #####
+
   generic:
     - match: '<'
       scope: punctuation.definition.generic.begin.swift
@@ -256,6 +258,15 @@ contexts:
         - match: '>'
           scope: punctuation.definition.generic.end.swift
           pop: true
+
+  ##### BUILTIN TYPES #####
+
+  ## Many more exist, these are just (by my estimation) the common ones. See: http://stackoverflow.com/questions/25754791/full-list-of-fundamental-swift-types
+  support-class:
+    - match: (?>Character|String|Int|Int8|Int16|Int32|Int64|UInt|UInt8|UInt16|UInt32|UInt64|Float|Float80|Double|Bool|AnyObject|Array|CollectionType|Comparable|Dictionary|Equatable|Hashable|MutableCollectionType|MutableSliceable|Printable|Range|RawByte|RawRepresentable|SequenceType|Sliceable|Slice|Streamable|Unmanaged|UnsafeMutablePointer|UnsafePointer)
+      scope: support.class.swift
+
+  ##### PROTOCOL DECLARATIONS #####
 
   literal-protocol:
     # e.g. protocol MyProtocol {  }
