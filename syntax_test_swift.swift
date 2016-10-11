@@ -92,7 +92,14 @@ for x in array {
 
 }
 
-while 
+switch MyEnum {
+  case .hello:
+    doSomething();
+  case .goodbye:
+    doSomethingElse();
+  default:
+    print("hi")
+}
 
 MyClass.myVar?.myOtherVar.myFunction()
 
