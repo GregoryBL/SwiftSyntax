@@ -105,6 +105,28 @@ contexts:
           pop: true
         - include: expression
 
+  ##### Literals #####
+
+  literal-number:
+    - match: \b0b[01][01_]*\b
+      scope: constant.numeric.binary.swift
+    - match: \b0o[0-7][0-7_]*\b
+      scope: constant.numeric.octal.swift
+    - match: \b0x[a-fA-F0-9][a-fA-F0-9_]*\b
+      scope: constant.numeric.hex.swift
+    - match: '(?:\b[0-9][0-9_]*)?\.[0-9_]+\b'
+      scope: constant.numeric.float.swift
+    - match: '\b[0-9][0-9_]*\b'
+      scope: constant.numeric.integer.swift
+
+  literal-language-constant:
+    - match: \btrue\b
+      scope: constant.language.boolean.true.swift
+    - match: \bfalse\b
+      scope: constant.language.boolean.false.swift
+    - match: \bnil\b
+      scope: constant.language.nil.swift
+
   literal-string:
     - match: '"'
       scope: punctuation.definition.string.begin.swift
@@ -132,6 +154,12 @@ contexts:
       scope: constant.character.escape.newline.swift
     - match: \\[0tr"'\\]
       scope: constant.character.escape.swift
+
+  literal-language-variable:
+    - match: \bsuper\b
+      scope: variable.language.super.swift
+    - match: \bself\b
+      scope: variable.language.self.swift
 
   ##### KEYWORDS #####
 
@@ -416,61 +444,6 @@ contexts:
 #   prototype:
 #     - include: comment
 
-#   expression:
-#     ## Float ##
-#     - match: \d*\.\d+
-#       scope: constant.numeric.float
-#     ## Integer ##
-#     - match: \d+
-#       scope: constant.numeric.integer
-#     ## String ##
-#     - match: '"'
-#       scope: punctuation.definition.string.begin
-#       push: string-double
-#     - include: typeIdentifier
-#     - include: identifier
-
-#   declaration:
-#     - match: (?=.*\bclass\b)
-#       push: class
-
-#   statement:
-#     - include: loop
-#     - include: expression
-#     - include: declaration
-
-# ## Grouping
-
-
-# ## Comments
-
-
-# ## Loops
-#   loop:
-#     - match: \bfor\b
-#       scope: keyword.control.loop.swift
-#       set: for
-#     - match: while
-#       scope: keyword.control.loop.swift
-#       set: condition
-
-#   for:
-#     - match: '{{ident}}\s+(in)\s+'
-#       captures:
-#         1: keyword.control.loop.swift
-#       push: brackets
-
-#   brackets:
-#     - match: '{'
-#       scope: punctuation.section.brackets.begin.swift
-#       push:
-#         - meta_scope: meta.brackets.swift
-#         - match: '}'
-#           scope: punctuation.section.brackets.end.swift
-#           pop: true
-#         - include: statement
-
-
 # ## Operators
 #   operator:
 #     - match: '[-+*/%]'
@@ -479,75 +452,6 @@ contexts:
 #       captures:
 #         1: storage.type.swift
 #         2: keyword.operator.assignment
-
-
-
-# ## Class declarations
-#   class:
-#     - meta_content_scope: meta.class.swift
-#     - include: class-attribute
-#     - include: class-access-modifier
-#     - include: class-final
-#     - include: class-class
-
-#   class-attribute:
-#     - match: (?:@objc|@UIApplicationMain|@NSApplicationMain|@IBDesignable)(?=\s.*class)
-#       scope: keyword.other.swift
-
-#   class-access-modifier:
-#     - match: (?:open|public|internal|fileprivate|private)(?:\s+(open|public|internal|fileprivate|private))*(?=\s.*class)
-#       scope: keyword.other.swift
-#       captures:
-#         1: invalid.illegal.swift
-
-#   class-final:
-#     - match: (?:final)(?:\s+(final))*(?=\s.*class)
-#       scope: keyword.other.swift
-#       captures:
-#         1: invalid.illegal.swift
-
-#   class-class:
-#     - match: class
-#       scope: keyword.entity.swift
-#       set: class-name
-
-#   class-name:
-#     - meta_scope: meta.class.swift
-#     - match: '\b({{typeIdent}})(?:\s*(:)\s*({{typeIdent}})(?:(,)\s*({{typeIdent}}))*)?\s*({)'
-#       captures:
-#         1: support.class.swift
-#         2: punctuation.separator.swift
-#         3: support.class.swift
-#         4: punctuation.separator.swift
-#         5: support.class.swift
-#         6: punctuation.section.braces.begin
-#       set: class-body
-
-#   # class-inherit:
-#   #   # - meta_content_scope: meta.class.swift
-#   #   - match: ':\s*'
-#   #     scope: punctuation.separator.swift
-#   #     set: class-type-inherit-list
-#   #   - match: '{'
-#   #     scope: punctuation.section.braces.begin
-#   #     set: class-body
-
-#   # class-type-inherit-list:
-#   #   - match: '({{typeIdent}})(?:(,)\s*({{typeIdent}}))*\s*({)'
-#   #     captures:
-#   #       1: support.class.swift
-#   #       2: punctuation.separator.swift
-#   #       3: support.class.swift
-#   #       4: punctuation.section.braces.begin
-#   #     set: class-body
-
-#   class-body:
-#     - meta_scope: meta.braces
-#     - meta_content_scope: meta.class.swift
-#     - match: '}'
-#       scope: punctuation.section.braces.end meta.class.swift
-#       pop: true
-
 
 # ## Function Declaration
 
