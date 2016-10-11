@@ -136,10 +136,16 @@ var y: Array<String> = ["hello"]
 //               ^^^^ constant.numeric.octal
 //                    ^^^ -constant.numeric.octal
 
+self. super.
+// <- variable.language.self
+//    ^^^^^ variable.language.super
 
-for x in array {
+true false nil
+// <- constant.language.boolean.true
+//   ^^^^^ constant.language.boolean.false
+//         ^^^ constant.language.nil
 
-}
+for x in array { }
 
 switch MyEnum {
   case .hello:

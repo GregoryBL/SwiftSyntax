@@ -119,6 +119,14 @@ contexts:
     - match: '\b[0-9][0-9_]*\b'
       scope: constant.numeric.integer.swift
 
+  literal-language-constant:
+    - match: \btrue\b
+      scope: constant.language.boolean.true.swift
+    - match: \bfalse\b
+      scope: constant.language.boolean.false.swift
+    - match: \bnil\b
+      scope: constant.language.nil.swift
+
   literal-string:
     - match: '"'
       scope: punctuation.definition.string.begin.swift
@@ -146,6 +154,12 @@ contexts:
       scope: constant.character.escape.newline.swift
     - match: \\[0tr"'\\]
       scope: constant.character.escape.swift
+
+  literal-language-variable:
+    - match: \bsuper\b
+      scope: variable.language.super.swift
+    - match: \bself\b
+      scope: variable.language.self.swift
 
   ##### KEYWORDS #####
 
