@@ -2,7 +2,7 @@
 ---
 name: Swift
 file_extensions:
-  - .swift
+  - swift
 scope: source.swift
 
 ## Order largely from babel-sublime
@@ -291,10 +291,7 @@ contexts:
         - match: '}'
           scope: punctuation.definition.class.body.end.swift
           pop: true
-        - include: class-properties
-        - include: class-method-definition
-        - include: class-method-storage
-        - include: brackets
+        - include: main
 
   ##### GENERIC DECLARATION #####
   ## This could use work
@@ -317,7 +314,7 @@ contexts:
 
   ## Many more exist, these are just (by my estimation) the common ones. See: http://stackoverflow.com/questions/25754791/full-list-of-fundamental-swift-types
   support-class:
-    - match: (?>Character|String|Int|Int8|Int16|Int32|Int64|UInt|UInt8|UInt16|UInt32|UInt64|Float|Float80|Double|Bool|AnyObject|Array|CollectionType|Comparable|Dictionary|Equatable|Hashable|MutableCollectionType|MutableSliceable|Printable|Range|RawByte|RawRepresentable|SequenceType|Sliceable|Slice|Streamable|Unmanaged|UnsafeMutablePointer|UnsafePointer)
+    - match: \b(?>Character|String|Int|Int8|Int16|Int32|Int64|UInt|UInt8|UInt16|UInt32|UInt64|Float|Float80|Double|Bool|AnyObject|Array|CollectionType|Comparable|Dictionary|Equatable|Hashable|MutableCollectionType|MutableSliceable|Printable|Range|RawByte|RawRepresentable|SequenceType|Sliceable|Slice|Streamable|Unmanaged|UnsafeMutablePointer|UnsafePointer)
       scope: support.class.swift
 
   ##### PROTOCOL DECLARATIONS #####
@@ -464,6 +461,70 @@ contexts:
           scope: punctuation.definition.enum.body.end.swift
           pop: true
         - include: enum-cases
+
+  ##### FUNCTION DECLARATION #####
+
+  literal-function:
+    - match: (?<!\.)(?=\bfunc\b)
+      push: func-def
+
+  func-def:
+    - meta_scope: meta.function.swift
+    - match: \bfunc\b
+      scope: storage.type.function.swift
+      push: func-name
+    - match: (?=->)
+      set: return-type
+    - match: \(
+      scope: punctuation.section.parens.begin.swift
+      set: parameter-list
+    - match: \)
+      scope: punctuation.section.parens.end.swift
+    - match: \{
+      scope: punctuation.section.braces.begin.swift
+      push: function-body
+    - match: (?<=})
+      pop: true
+
+  func-name:
+    - match: ({{ident}})
+      scope: entity.name.function.swift
+      pop: true
+
+  parameter-list:
+    - meta_content_scope: meta.function.parameters.swift
+    - include: parameter
+    - match: (?=\))
+      set: func-def
+    - match: (?=\{)
+      set: func-def
+
+  parameter:
+    - match: '(?<=\:\s)({{typeIdent}})'
+      scope: support.type.class.swift
+    - match: '({{ident}})\s*(\:)'
+      captures:
+        1: variable.parameter.swift
+        2: punctuation.separator.swift
+    - match: '({{ident}}|_)\b'
+      scope: entity.name.function.swift
+    - match: ','
+      scope: punctuation.separator.swift
+
+  return-type:
+    - meta_content_scope: meta.function.return-type
+    - match: ->
+      scope: keyword.operator.return.swift
+    - match: '\b({{typeIdent}})\b'
+      scope: support.type.class.swift
+    - match: (?={)
+      set: func-def
+
+  function-body:
+    - include: main
+    - match: \}
+      scope: punctuation.section.braces.end.swift
+      pop: true
 
 #     - match: (let|var)\s+{{ident}}\s*(=)\s*
 #       captures:

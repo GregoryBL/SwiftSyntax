@@ -179,6 +179,30 @@ a ? b : nil
 //^ keyword.control.conditional.ternary
 //    ^ keyword.control.conditional.ternary
 
+private func myFunc(_ param: Contact, for p2: String) -> Bool { }
+// <- storage.modifier
+//      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function
+//                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function.parameters
+//                                                    ^^^^^^^^ meta.function.return-type
+//      ^^^^ storage.type.function
+//           ^^^^^^ entity.name.function
+//                 ^ punctuation.section.parens.begin
+//                  ^ entity.name.function
+//                    ^^^^^ variable.parameter
+//                         ^ punctuation.separator
+//                           ^^^^^^^ support.type.class
+//                                  ^ punctuation.separator
+//                                    ^^^ entity.name.function
+//                                        ^^ variable.parameter
+//                                          ^ punctuation.separator
+//                                            ^^^^^^ support.type.class
+//                                                  ^ punctuation.section.parens.end
+//                                                    ^^ keyword.operator.return
+//                                                       ^^^^ support.type.class
+//                                                            ^ punctuation.section.braces.begin
+//                                                              ^ punctuation.section.braces.end
+
+
 MyClass.myVar?.myOtherVar.myFunction()
 
 MyClass.myVar?.myOtherVar!.myProperty? = 42
