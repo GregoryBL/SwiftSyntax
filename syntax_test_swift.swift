@@ -183,6 +183,7 @@ private func myFunc(_ param: Contact, for p2: String) -> Bool { }
 // <- storage.modifier
 //      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function
 //                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function.parameters
+//                                                    ^^^^^^^^ meta.function.return-type
 //      ^^^^ storage.type.function
 //           ^^^^^^ entity.name.function
 //                 ^ punctuation.section.parens.begin
@@ -196,6 +197,10 @@ private func myFunc(_ param: Contact, for p2: String) -> Bool { }
 //                                          ^ punctuation.separator
 //                                            ^^^^^^ support.type.class
 //                                                  ^ punctuation.section.parens.end
+//                                                    ^^ keyword.operator.return
+//                                                       ^^^^ support.type.class
+//                                                            ^ punctuation.section.braces.begin
+//                                                              ^ punctuation.section.braces.end
 
 
 MyClass.myVar?.myOtherVar.myFunction()
