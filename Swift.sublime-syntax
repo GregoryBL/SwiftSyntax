@@ -40,6 +40,7 @@ contexts:
 
     - include: literal-method-call
     - include: literal-function-call
+    - include: property-access
 
     - include: brackets
 
@@ -188,7 +189,7 @@ contexts:
   ##### KEYWORDS #####
 
   literal-for:
-    - match: (?<!\.)\bfor\b
+    - match: for
       scope: keyword.control.loop.swift
 
   literal-switch:
@@ -226,6 +227,7 @@ contexts:
     - include: declaration-modifiers
     - include: type-attributes
     - include: access-attributes
+    - include: function-attributes
 
   declaration-attributes:
     - match: (@)(?>available|discardableResult|GKInspectable|objc|nonobjc|NSApplicationMain|NSCopying|NSManaged|testable|UIApplicationMain|IBAction|IBOutlet|IBDesignable|IBInspectable)
@@ -244,6 +246,10 @@ contexts:
   access-attributes:
     - match: (?>open|public|internal|fileprivate|private)
       scope: storage.modifier.swift
+
+  function-attributes:
+    - match: override|convenience
+      scope: keyword.other.swift
 
   ##### CLASS DECLARATIONS #####
 
@@ -500,8 +506,9 @@ contexts:
       set: func-def
 
   parameter:
-    - match: '(?<=\:\s)({{typeIdent}})'
-      scope: support.type.class.swift
+    - match: _
+      scope: entity.name.function.swift
+    - include: type
     - match: '({{ident}})\s*(\:)'
       captures:
         1: variable.parameter.swift
@@ -515,17 +522,76 @@ contexts:
     - meta_content_scope: meta.function.return-type
     - match: ->
       scope: keyword.operator.return.swift
-    - match: '\b({{typeIdent}})\b'
-      scope: support.type.class.swift
+    - include: type
     - match: (?={)
       set: func-def
 
   function-body:
-    - include: main
     - match: \}
-      scope: punctuation.section.braces.end.swift
+      scope: punctuation.section.braces.end.swift invalid.illegal.swift
       pop: true
+    - include: main
 
+  type:
+    - match: ({{typeIdent}})([?!]?)
+      captures:
+        1: entity.name.type.swift
+        2: keyword.operator.optional.swift
+    - match: (\[)({{typeIdent}})([?!]?)(\])([?!]?)
+      captures:
+        1: punctuation.definition.array.begin.swift
+        2: entity.name.type.swift
+        3: keyword.operator.optional.swift
+        4: punctuation.definition.array.end.swift
+        5: keyword.operator.optional.swift
+    - match: (\[)({{typeIdent}})([?!]?)(\:)(\])([?!]?)
+      captures:
+        1: punctuation.definition.array.begin.swift
+        2: entity.name.type.swift
+        3: keyword.operator.optional.swift
+        4: punctuation.definition.array.end.swift
+        5: keyword.operator.optional.swift
+
+  property-access:
+    - match: (\.)({{ident}})([?!]?)
+      captures:
+        1: punctuation.accessor.swift
+        2: variable.other.member.swift
+        3: keyword.operator.optional.swift
+
+  literal-variable:
+    - match: ({{typeIdent}})([?!]?)
+      captures:
+        1: entity.name.class.swift
+        2: keyword.operator.optional.swift
+    - match: ({{ident}})([?!]?)
+      captures:
+        1: variable.other.swift
+        2: keyword.operator.optional.swift
+
+  literal-function-call:
+    - match: ({{typeIdent}})(\()
+      scope: meta.function-call.swift
+      captures:
+        1: entity.name.class.swift
+        2: punctuation.section.parens.begin.swift
+      push: call-parameters
+    - match: (\.)?({{ident}})(\()
+      scope: meta.function-call.swift
+      captures:
+        1: punctuation.accessor.swift
+        2: variable.function.swift
+        3: punctuation.section.parens.begin.swift
+      push: call-parameters
+    - match: \)
+      scope: punctuation.section.parens.end.swift meta.function-call.swift
+
+  call-parameters:
+    - match: '({{ident}})\s*\:'
+      scope: variable.function.swift
+    - match: (?=\))
+      pop: true
+    - include: expression
 #     - match: (let|var)\s+{{ident}}\s*(=)\s*
 #       captures:
 #         1: storage.type.swift

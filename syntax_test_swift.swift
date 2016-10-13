@@ -136,9 +136,9 @@ var y: Array<String> = ["hello"]
 //               ^^^^ constant.numeric.octal
 //                    ^^^ -constant.numeric.octal
 
-self. super.
+self.hello super.thing(param)
 // <- variable.language.self
-//    ^^^^^ variable.language.super
+//         ^^^^^ variable.language.super
 
 true false nil
 // <- constant.language.boolean.true
@@ -190,15 +190,15 @@ private func myFunc(_ param: Contact, for p2: String) -> Bool { }
 //                  ^ entity.name.function
 //                    ^^^^^ variable.parameter
 //                         ^ punctuation.separator
-//                           ^^^^^^^ support.type.class
+//                           ^^^^^^^ entity.name.type
 //                                  ^ punctuation.separator
 //                                    ^^^ entity.name.function
 //                                        ^^ variable.parameter
 //                                          ^ punctuation.separator
-//                                            ^^^^^^ support.type.class
+//                                            ^^^^^^ entity.name.type
 //                                                  ^ punctuation.section.parens.end
 //                                                    ^^ keyword.operator.return
-//                                                       ^^^^ support.type.class
+//                                                       ^^^^ entity.name.type
 //                                                            ^ punctuation.section.braces.begin
 //                                                              ^ punctuation.section.braces.end
 
