@@ -207,4 +207,6 @@ MyClass.myVar?.myOtherVar.myFunction()
 
 MyClass.myVar?.myOtherVar!.myProperty? = 42
 
+myfunction()
+
 

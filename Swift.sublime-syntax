@@ -213,6 +213,7 @@ contexts:
                   pop: true
                 - match: \,
                   scope: punctuation.separator.swift
+            - include: main
 
   literal-keywords:
     - match: (?<!\.)\b(?>if|else)\b
