@@ -528,7 +528,7 @@ contexts:
 
   function-body:
     - match: \}
-      scope: punctuation.section.braces.end.swift invalid.illegal.swift
+      scope: punctuation.section.braces.end.swift
       pop: true
     - include: main
 
