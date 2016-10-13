@@ -189,7 +189,7 @@ contexts:
   ##### KEYWORDS #####
 
   literal-for:
-    - match: for
+    - match: \bfor\b
       scope: keyword.control.loop.swift
 
   literal-switch:
