@@ -148,7 +148,7 @@ true false nil
 for x in array { }
 // <- keyword.control.loop
 
-switch MyEnum {
+switch myEnum {
 // <- keyword.control.switch
 //            ^ punctuation.section.braces.begin
   case .hello:
@@ -206,5 +206,7 @@ private func myFunc(_ param: Contact, for p2: String) -> Bool { }
 MyClass.myVar?.myOtherVar.myFunction()
 
 MyClass.myVar?.myOtherVar!.myProperty? = 42
+
+myfunction()
 
 
