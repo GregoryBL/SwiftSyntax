@@ -214,6 +214,7 @@ contexts:
                 - match: \,
                   scope: punctuation.separator.swift
             - include: main
+        - include: main
 
   literal-keywords:
     - match: (?<!\.)\b(?>if|else)\b

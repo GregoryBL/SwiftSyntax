@@ -148,7 +148,7 @@ true false nil
 for x in array { }
 // <- keyword.control.loop
 
-switch MyEnum {
+switch myEnum {
 // <- keyword.control.switch
 //            ^ punctuation.section.braces.begin
   case .hello:
