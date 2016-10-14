@@ -45,6 +45,7 @@ contexts:
     - include: brackets
 
     - include: literal-operators
+    - include: literal-assignment
     - include: literal-variable
 
   comments:
@@ -552,7 +553,8 @@ contexts:
         2: entity.name.type.swift
         3: keyword.operator.optional.swift
         4: punctuation.definition.array.end.swift
-        5: keyword.operator.optional.swift
+        5: keyword.operator.optional.swift\
+    - include: generic
 
   property-access:
     - match: (\.)({{ident}})([?!]?)
@@ -562,11 +564,11 @@ contexts:
         3: keyword.operator.optional.swift
 
   literal-variable:
-    - match: ({{typeIdent}})([?!]?)
+    - match: \b({{typeIdent}})([?!]?)
       captures:
         1: entity.name.class.swift
         2: keyword.operator.optional.swift
-    - match: ({{ident}})([?!]?)
+    - match: \b({{ident}})([?!]?)
       captures:
         1: variable.other.swift
         2: keyword.operator.optional.swift
@@ -594,7 +596,31 @@ contexts:
     - match: (?=\))
       pop: true
     - include: expression
-#     - match: (let|var)\s+{{ident}}\s*(=)\s*
-#       captures:
-#         1: storage.type.swift
-#         2: keyword.operator.assignment
+
+  literal-assignment:
+    - match: \blet\b
+      scope: storage.type.swift
+      set: assign-static
+    - match: \bvar\b
+      scope: storage.type.swift
+      set: assign-dynamic
+
+  assign-static:
+    - include: type
+    - match: \b{{ident}}\b
+      scope: variable.other.constant
+    - match: ':'
+      scope: punctuation.separator
+    - match: '='
+      scope: keyword.operator.assignment
+      set: main
+
+  assign-dynamic:
+    - include: type
+    - match: \b{{ident}}\b
+      scope: variable.other.readwrite
+    - match: ':'
+      scope: punctuation.separator
+    - match: '='
+      scope: keyword.operator.assignment
+      set: main

@@ -107,10 +107,16 @@ enum MyEnum<T>: Protocol, Other { }
 //                                ^ punctuation.definition.enum.body.end
 
 let x: String = "hello"
-//     ^^^^^^ support.class
+// <- storage.type
+//  ^ variable.other.constant
+//   ^ punctuation.separator
+//     ^^^^^^ entity.name.type
+//            ^ keyword.operator.assignment
 
 var y: Array<String> = ["hello"]
-//     ^^^^^ support.class
+// <- storage.type
+//  ^ variable.other.readwrite
+//     ^^^^^ entity.name.type
 //          ^^^^^^^^ meta.generic
 
 1.0 + -.46
