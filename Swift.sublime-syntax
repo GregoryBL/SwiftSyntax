@@ -600,10 +600,10 @@ contexts:
   literal-assignment:
     - match: \blet\b
       scope: storage.type.swift
-      set: assign-static
+      push: assign-static
     - match: \bvar\b
       scope: storage.type.swift
-      set: assign-dynamic
+      push: assign-dynamic
 
   assign-static:
     - include: type
@@ -613,9 +613,11 @@ contexts:
       scope: punctuation.separator
     - match: '='
       scope: keyword.operator.assignment
-      set: main
+      pop: true
     - match: '$'
-      set: main
+      pop: true
+    - match: (?={)
+      pop: true
 
   assign-dynamic:
     - include: type
@@ -625,6 +627,8 @@ contexts:
       scope: punctuation.separator
     - match: '='
       scope: keyword.operator.assignment
-      set: main
+      pop: true
     - match: '$'
-      set: main
+      pop: true
+    - match: (?={)
+      pop: true
