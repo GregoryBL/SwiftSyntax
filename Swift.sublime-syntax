@@ -572,6 +572,8 @@ contexts:
       captures:
         1: variable.other.swift
         2: keyword.operator.optional.swift
+    - match: '='
+      scope: keyword.operator.assignment.swift
 
   literal-function-call:
     - match: ({{typeIdent}})(\()
@@ -608,11 +610,11 @@ contexts:
   assign-static:
     - include: type
     - match: \b{{ident}}\b
-      scope: variable.other.constant
+      scope: variable.other.constant.swift
     - match: ':'
-      scope: punctuation.separator
+      scope: punctuation.separator.swift
     - match: '='
-      scope: keyword.operator.assignment
+      scope: keyword.operator.assignment.swift
       pop: true
     - match: '$'
       pop: true
@@ -622,11 +624,11 @@ contexts:
   assign-dynamic:
     - include: type
     - match: \b{{ident}}\b
-      scope: variable.other.readwrite
+      scope: variable.other.readwrite.swift
     - match: ':'
-      scope: punctuation.separator
+      scope: punctuation.separator.swift
     - match: '='
-      scope: keyword.operator.assignment
+      scope: keyword.operator.assignment.swift
       pop: true
     - match: '$'
       pop: true
