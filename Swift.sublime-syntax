@@ -614,6 +614,8 @@ contexts:
     - match: '='
       scope: keyword.operator.assignment
       set: main
+    - match: '$'
+      set: main
 
   assign-dynamic:
     - include: type
@@ -623,4 +625,6 @@ contexts:
       scope: punctuation.separator
     - match: '='
       scope: keyword.operator.assignment
+      set: main
+    - match: '$'
       set: main
