@@ -1,0 +1,13 @@
+{
+  "name": "SwiftSyntax",
+  "description": "A language grammar for Swift development outside of XCode",
+  "details": "https://github.com/GregoryBL/SwiftSyntax",
+  "author": "Gregory Berns-Leone (GregoryBL)",
+  "labels": ["language syntax"],
+  "releases": [
+    {
+      "sublime_text": "*",
+      "tags": true
+    }
+  ]
+}
