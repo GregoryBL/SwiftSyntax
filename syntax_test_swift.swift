@@ -211,8 +211,12 @@ private func myFunc(_ param: Contact, for p2: String) -> Bool { }
 do {
   try?
 
-  catch {
+  catch RuntimeError where a == b{
   }
+}
+
+{ response in
+  call(response)
 }
 
 MyClass.myVar?.myOtherVar.myFunction() as! NSString

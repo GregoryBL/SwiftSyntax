@@ -235,7 +235,9 @@ contexts:
     - match: \b(?:as(?:(\?|!)?)|is)(?=\s)
       scope: keyword.operator.cast.swift
     - match: \bwhere\b
-      scope: keyword.operator.where.swift
+      scope: keyword.control.where.swift
+    - match: \bin\b
+      scope: keyword.operator.in.swift
     - include: declaration-attributes
     - include: declaration-modifiers
     - include: type-attributes
