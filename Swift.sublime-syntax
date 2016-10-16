@@ -266,12 +266,12 @@ contexts:
 
   literal-class:
     # e.g. class MyClass : OtherClass {  }
-    - match: (?<!\.)(?=\bclass\b)
+    - match: (?<!\.)(?=\bclass|extension\b)
       push: class_def
 
   class_def:
     - meta_scope: meta.class.swift
-    - match: \bclass\b
+    - match: \bclass|extension\b
       scope: storage.type.class.swift
       push: [class_body, class_inherits, class_name]
     - match: (?<=})

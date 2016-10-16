@@ -215,6 +215,8 @@ do {
   }
 }
 
+extension String { }
+
 MyClass.myVar?.myOtherVar.myFunction() as! NSString
 
 MyClass.myVar?.myOtherVar!.myProperty? = 42
