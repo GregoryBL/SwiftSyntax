@@ -226,7 +226,7 @@ contexts:
       scope: keyword.control.flow.swift
     - match: (?<!\.)\b(?>while|repeat)\b
       scope: keyword.control.loop.swift
-    - match: \b(?>do|catch)\b
+    - match: \b(?>do|catch|throw|rethrow)\b
       scope: keyword.control.exception.swift
     - match: \b(try)(\?|!)?(?=\s)
       captures:
@@ -236,6 +236,12 @@ contexts:
       scope: keyword.control.import
     - match: \b(?:as(?:(\?|!)?)|is)(?=\s)
       scope: keyword.operator.cast.swift
+    - match: \bwhere\b
+      scope: keyword.control.where.swift
+    - match: \bin\b
+      scope: keyword.control.in.swift
+    - match: \bguard\b
+      scope: keyword.control.guard.swift
     - include: declaration-attributes
     - include: declaration-modifiers
     - include: type-attributes

@@ -211,8 +211,13 @@ private func myFunc(_ param: Contact, for p2: String) -> Bool { }
 do {
   try?
 
-  catch {
+  catch RuntimeError where a == b{
   }
+}
+
+{ response in
+  guard a != b else throw RuntimeError
+  call(response)
 }
 
 extension String { }
