@@ -234,6 +234,8 @@ contexts:
         2: keyword.operator.optional.swift
     - match: \b(?:as(?:(\?|!)?)|is)(?=\s)
       scope: keyword.operator.cast.swift
+    - match: \bwhere\b
+      scope: keyword.operator.where.swift
     - include: declaration-attributes
     - include: declaration-modifiers
     - include: type-attributes
