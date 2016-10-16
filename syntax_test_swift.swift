@@ -216,6 +216,7 @@ do {
 }
 
 { response in
+  guard a != b else throw RuntimeError
   call(response)
 }
 
