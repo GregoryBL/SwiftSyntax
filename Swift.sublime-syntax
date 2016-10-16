@@ -237,7 +237,7 @@ contexts:
     - match: \bwhere\b
       scope: keyword.control.where.swift
     - match: \bin\b
-      scope: keyword.operator.in.swift
+      scope: keyword.control.in.swift
     - match: \bguard\b
       scope: keyword.control.guard.swift
     - include: declaration-attributes
