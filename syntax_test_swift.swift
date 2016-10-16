@@ -208,8 +208,14 @@ private func myFunc(_ param: Contact, for p2: String) -> Bool { }
 //                                                            ^ punctuation.section.braces.begin
 //                                                              ^ punctuation.section.braces.end
 
+do {
+  try?
 
-MyClass.myVar?.myOtherVar.myFunction()
+  catch {
+  }
+}
+
+MyClass.myVar?.myOtherVar.myFunction() as! NSString
 
 MyClass.myVar?.myOtherVar!.myProperty? = 42
 
