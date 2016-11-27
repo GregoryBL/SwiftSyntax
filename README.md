@@ -4,17 +4,11 @@ A work-in-progress syntax highlighting project for Swift 3 in SublimeText 3.
 The project started with [babel-sublime](https://github.com/babel/babel-sublime) as a skeleton, but changed significantly where needed due to language differences.
 
 ## INSTALLATION
-Submitted to Package Control.
-
-Recommended to install using package control (soon):
-* Install (Package Control)[https://packagecontrol.io/installation]
-* In Package Control: [Install Packages] -> [SwiftSyntax]
-
 Manual installation (MacOS):
 * Clone repo/copy files to ~/Library/Application Support/Sublime Text 3/Packages/User/SwiftSyntax
 
 ## CONTRIBUTING
-Feedback/contributions welcome. Please submit issues before pull requests so we can nail down scope/direction.
+Feedback/contributions welcome, or feel free to steal parts. Let me know and I might contribute to your project instead :).
 
 ## LICENSE
 
