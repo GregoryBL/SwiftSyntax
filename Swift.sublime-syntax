@@ -25,6 +25,7 @@ contexts:
     - include: generic
     - include: support-class
 
+    - include: literal-import
     - include: literal-function
     - include: literal-class
     - include: literal-struct
@@ -99,11 +100,11 @@ contexts:
 
   curly-brackets:
     - match: '{'
-      scope: punctuation.section.braces.begin.swift
+      scope: punctuation.section.block.begin.swift
       push:
         - meta_scope: meta.braces.swift
         - match: '}'
-          scope: punctuation.section.braces.end.swift
+          scope: punctuation.section.block.end.swift
           pop: true
         - include: expression
 
@@ -199,10 +200,10 @@ contexts:
       push:
         - meta_scope: meta.switch.swift
         - match: \}
-          scope: punctuation.section.braces.end.swift
+          scope: punctuation.section.block.end.swift
           pop: true
         - match: \{
-          scope: punctuation.section.braces.begin.swift
+          scope: punctuation.section.block.begin.swift
           push:
             - match: (?=})
               pop: true
@@ -232,8 +233,6 @@ contexts:
       captures:
         1: keyword.control.exception.swift
         2: keyword.operator.optional.swift
-    - match: \bimport\b
-      scope: keyword.control.import
     - match: \b(?:as(?:(\?|!)?)|is)(?=\s)
       scope: keyword.operator.cast.swift
     - match: \bwhere\b
@@ -263,7 +262,7 @@ contexts:
       scope: keyword.other.swift
 
   access-attributes:
-    - match: (?>open|public|internal|fileprivate|private)
+    - match: (?>open|public|internal|fileprivate|private|static)
       scope: storage.modifier.swift
 
   function-attributes:
@@ -280,7 +279,7 @@ contexts:
   class_def:
     - meta_scope: meta.class.swift
     - match: \bclass|extension\b
-      scope: storage.type.class.swift
+      scope: keyword.declaration.class.swift
       push: [class_body, class_inherits, class_name]
     - match: (?<=})
       pop: true
@@ -311,10 +310,10 @@ contexts:
 
   class_body:
     - match: '{'
-      scope: punctuation.definition.class.body.begin.swift
+      scope: punctuation.section.block.begin.swift
       set:
         - match: '}'
-          scope: punctuation.definition.class.body.end.swift
+          scope: punctuation.section.block.end.swift
           pop: true
         - include: main
 
@@ -384,10 +383,10 @@ contexts:
 
   protocol_body:
     - match: '{'
-      scope: punctuation.definition.protocol.body.begin.swift
+      scope: punctuation.section.block.begin.swift
       set:
         - match: '}'
-          scope: punctuation.definition.protocol.body.end.swift
+          scope: punctuation.section.block.end.swift
           pop: true
         # - include: protocol-properties
         # - include: protocol-method-definition
@@ -410,7 +409,7 @@ contexts:
   struct_name:
     - match: (?=\s*:|{)
       pop: true
-    - match: ({{typeIdent}})
+    - match: ({{ident}})
       scope: entity.name.class.swift
       set:
         - include: generic
@@ -430,16 +429,22 @@ contexts:
     - match: (?={)
       pop: true
 
+  struct-method:
+      - meta_scope: meta.struct.function.swift
+      - match: (?={{ident}}\s*\()
+        scope: storage.type.function.swift
+        push: func-name
+      - include: func-end
+
   struct_body:
     - match: '{'
-      scope: punctuation.definition.struct.body.begin.swift
+      scope: punctuation.section.block.begin.swift
       set:
         - match: '}'
-          scope: punctuation.definition.struct.body.end.swift
+          scope: punctuation.section.block.end.swift
           pop: true
-        # - include: struct-properties
-        # - include: struct-method-definition
-        # - include: struct-method-storage
+        - include: struct-method
+        - include: expression
         - include: brackets
 
   literal-enum:
@@ -480,12 +485,31 @@ contexts:
 
   enum_body:
     - match: '{'
-      scope: punctuation.definition.enum.body.begin.swift
+      scope: punctuation.section.block.begin.swift
       set:
         - match: '}'
-          scope: punctuation.definition.enum.body.end.swift
+          scope: punctuation.section.block.end.swift
           pop: true
         # - include: enum-cases
+
+  literal-import:
+    - match: \bimport\b\s+
+      scope: keyword.control.import-export.swift
+      set:
+        - import-meta
+        - import-items
+
+  import-meta:
+    - meta_include_prototype: false
+    - meta_scope: meta.import.swift
+    - match: ''
+      pop: true
+
+  import-items:
+    - match: \S+
+      scope: variable.other.swift
+    - match: \n
+      pop: true
 
   ##### FUNCTION DECLARATION #####
 
@@ -498,6 +522,9 @@ contexts:
     - match: \bfunc\b
       scope: storage.type.function.swift
       push: func-name
+    - include: func-end
+
+  func-end:
     - match: (?=->)
       set: return-type
     - match: \(
@@ -506,7 +533,7 @@ contexts:
     - match: \)
       scope: punctuation.section.parens.end.swift
     - match: \{
-      scope: punctuation.section.braces.begin.swift
+      scope: punctuation.section.block.begin.swift
       push: function-body
     - match: (?<=})
       pop: true
@@ -525,15 +552,15 @@ contexts:
       set: func-def
 
   parameter:
-    - match: _
-      scope: entity.name.function.swift
+    - match: _(?=\s)
+      scope: variable.language.blank.swift
     - include: type
     - match: '({{ident}})\s*(\:)'
       captures:
         1: variable.parameter.swift
         2: punctuation.separator.swift
     - match: '({{ident}}|_)\b'
-      scope: entity.name.function.swift
+      scope: variable.parameter.argument-label.swift
     - match: ','
       scope: punctuation.separator.swift
 
@@ -547,26 +574,26 @@ contexts:
 
   function-body:
     - match: \}
-      scope: punctuation.section.braces.end.swift
+      scope: punctuation.section.block.end.swift
       pop: true
     - include: main
 
   type:
     - match: ({{typeIdent}})([?!]?)
       captures:
-        1: entity.name.type.swift
+        1: storage.type.swift
         2: keyword.operator.optional.swift
     - match: (\[)({{typeIdent}})([?!]?)(\])([?!]?)
       captures:
         1: punctuation.definition.array.begin.swift
-        2: entity.name.type.swift
+        2: storage.type.swift
         3: keyword.operator.optional.swift
         4: punctuation.definition.array.end.swift
         5: keyword.operator.optional.swift
     - match: (\[)({{typeIdent}})([?!]?)(\:)(\])([?!]?)
       captures:
         1: punctuation.definition.array.begin.swift
-        2: entity.name.type.swift
+        2: storage.type.swift
         3: keyword.operator.optional.swift
         4: punctuation.definition.array.end.swift
         5: keyword.operator.optional.swift\
@@ -582,7 +609,7 @@ contexts:
   literal-variable:
     - match: \b({{typeIdent}})([?!]?)
       captures:
-        1: entity.name.class.swift
+        1: support.class.swift
         2: keyword.operator.optional.swift
     - match: \b({{ident}})([?!]?)
       captures:
@@ -592,13 +619,21 @@ contexts:
       scope: keyword.operator.assignment.swift
 
   literal-function-call:
-    - match: ({{typeIdent}})(\()
-      scope: meta.function-call.swift
+    - match: ({{typeIdent}})\s*(\()
+      scope: meta.block.swift
       captures:
-        1: entity.name.class.swift
+        1: variable.instantiator.swift
         2: punctuation.section.parens.begin.swift
       push: call-parameters
-    - match: (\.)?({{ident}})(\()
+    - match: (\#(?:available|selector))\s*(\()
+      scope: meta.function-call.swift
+      captures:
+        1: variable.language.swift
+        2: punctuation.section.parens.begin.swift
+      push: call-parameters
+    - match: \)
+      scope: punctuation.section.parens.end.swift meta.function-call.swift
+    - match: (\.)?({{ident}})\s*(\()
       scope: meta.function-call.swift
       captures:
         1: punctuation.accessor.swift
@@ -610,7 +645,7 @@ contexts:
 
   call-parameters:
     - match: '({{ident}})\s*\:'
-      scope: variable.function.swift
+      scope: variable.property.swift
     - match: (?=\))
       pop: true
     - include: expression

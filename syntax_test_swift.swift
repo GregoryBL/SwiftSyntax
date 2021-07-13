@@ -30,12 +30,12 @@
 //                       ^ string.quoted.double
 
 {[ (  )] }
-// <- punctuation.section.braces.begin
+// <- punctuation.section.block.begin
  // <- punctuation.section.brackets.begin
 // ^ punctuation.section.parens.begin
 //    ^ punctuation.section.parens.end
 //     ^ punctuation.section.brackets.end
-//       ^ punctuation.section.braces.end
+//       ^ punctuation.section.block.end
 // ^^^^ meta.parens
 //^^^^^^ meta.brackets
 //^^^^^^^^ meta.braces
@@ -48,18 +48,17 @@
 //            ^^^^^ keyword.other
 //                  ^^^^^^^^^^^ storage.modifier
 //                              ^^^^^ storage.modifier
-//                                    ^^^^^ storage.type.class
-
+//                                    ^^^^^ keyword.declaration.class
 class Mvc : MyClass, MyProtocol { }
-// <- storage.type.class
+// <- keyword.declaration.class
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.class
 //    ^^^ entity.name.class
 //        ^ punctuation.separator
 //          ^^^^^^^ entity.other.inherited-class
 //                 ^ punctuation.separator
 //                   ^^^^^^^^^^ entity.other.inherited-class
-//                              ^ punctuation.definition.class.body.begin
-//                                ^ punctuation.definition.class.body.end
+//                              ^ punctuation.section.block.begin
+//                                ^ punctuation.section.block.end
 
 class MyClass<Key: Hashable, Value>: Array<Array<String>> { }
 //           ^^^^^^^^^^^^^^^^^^^^^^ meta.generic
@@ -71,7 +70,8 @@ class MyClass<Key: Hashable, Value>: Array<Array<String>> { }
 //                           ^^^^^ variable.other.generic
 //                                ^ punctuation.definition.generic.end
 //                                                     ^^ punctuation.definition.generic.end
-
+//                                                        ^ punctuation.section.block.begin
+//                                                          ^ punctuation.section.block.end
 protocol MyProtocol: class, Other { }
 // <- storage.type.protocol
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.protocol
@@ -80,8 +80,8 @@ protocol MyProtocol: class, Other { }
 //                   ^^^^^ keyword.other
 //                        ^ punctuation.separator
 //                          ^^^^^ entity.other.inherited-class
-//                                ^ punctuation.definition.protocol.body.begin
-//                                  ^ punctuation.definition.protocol.body.end
+//                                ^ punctuation.section.block.begin
+//                                  ^ punctuation.section.block.end
 
 struct MyStruct: Protocol, Other { }
 // <- storage.type.struct
@@ -91,8 +91,8 @@ struct MyStruct: Protocol, Other { }
 //               ^^^^^^^ entity.other.inherited-class
 //                       ^ punctuation.separator
 //                         ^^^^^ entity.other.inherited-class
-//                               ^ punctuation.definition.struct.body.begin
-//                                 ^ punctuation.definition.struct.body.end
+//                               ^ punctuation.section.block.begin
+//                                 ^ punctuation.section.block.end
 
 enum MyEnum<T>: Protocol, Other { }
 // <- storage.type.enum
@@ -103,20 +103,20 @@ enum MyEnum<T>: Protocol, Other { }
 //              ^^^^^^^ entity.other.inherited-class
 //                      ^ punctuation.separator
 //                        ^^^^^ entity.other.inherited-class
-//                              ^ punctuation.definition.enum.body.begin
-//                                ^ punctuation.definition.enum.body.end
+//                              ^ punctuation.section.block.begin
+//                                ^ punctuation.section.block.end
 
 let x: String = "hello"
 // <- storage.type
 //  ^ variable.other.constant
 //   ^ punctuation.separator
-//     ^^^^^^ entity.name.type
+//     ^^^^^^ storage.type
 //            ^ keyword.operator.assignment
 
 var y: Array<String> = ["hello"]
 // <- storage.type
 //  ^ variable.other.readwrite
-//     ^^^^^ entity.name.type
+//     ^^^^^ storage.type
 //          ^^^^^^^^ meta.generic
 
 1.0 + -.46
@@ -156,7 +156,7 @@ for x in array { }
 
 switch myEnum {
 // <- keyword.control.switch
-//            ^ punctuation.section.braces.begin
+//            ^ punctuation.section.block.begin
   case .hello:
 //^^^^ keyword.control.switch
 //           ^ punctuation.separator
@@ -170,7 +170,7 @@ switch myEnum {
 //       ^ punctuation.separator
     print("hi")
 }
-// <- punctuation.section.braces.end
+// <- punctuation.section.block.end
 
 while x == y { }
 // <- keyword.control.loop
@@ -193,20 +193,20 @@ private func myFunc(_ param: Contact, for p2: String) -> Bool { }
 //      ^^^^ storage.type.function
 //           ^^^^^^ entity.name.function
 //                 ^ punctuation.section.parens.begin
-//                  ^ entity.name.function
+//                  ^ variable.language.blank.swift
 //                    ^^^^^ variable.parameter
 //                         ^ punctuation.separator
-//                           ^^^^^^^ entity.name.type
+//                           ^^^^^^^ storage.type
 //                                  ^ punctuation.separator
-//                                    ^^^ entity.name.function
+//                                    ^^^ variable.parameter.argument-label.swift
 //                                        ^^ variable.parameter
 //                                          ^ punctuation.separator
-//                                            ^^^^^^ entity.name.type
+//                                            ^^^^^^ storage.type
 //                                                  ^ punctuation.section.parens.end
 //                                                    ^^ keyword.operator.return
-//                                                       ^^^^ entity.name.type
-//                                                            ^ punctuation.section.braces.begin
-//                                                              ^ punctuation.section.braces.end
+//                                                       ^^^^ storage.type
+//                                                            ^ punctuation.section.block.begin
+//                                                              ^ punctuation.section.block.end
 
 do {
   try?
@@ -221,11 +221,79 @@ do {
 }
 
 extension String { }
+// <- meta.class
+//        ^^^^^^ entity.name.class
 
 MyClass.myVar?.myOtherVar.myFunction() as! NSString
+// <- support.class
+//                        ^^^^^^^^^^ variable.function
+//                                         ^^^^^^^^ support.class
 
 MyClass.myVar?.myOtherVar!.myProperty? = 42
 
 myfunction()
+// <- variable.function
 
+import Cocoa
+//^^^^^^^^^^ meta.import.swift
+// ^ keyword.control.import-export
+//     ^^^^^ variable.other
 
+static let settings = NSToolbarItem.Identifier("Settings")
+// <- storage.modifier
+
+appMenu.submenu?.addItem(NSMenuItem(title: "Hide \(appName)", action: #selector(NSApplication.hide(_:)), keyEquivalent: "h"))
+//                       ^^^^^^^^^^ variable.instantiator
+//                                  ^^^^^^ variable.property.swift
+//                                                                    ^^^^^^^^^ variable.language.swift
+
+if #available(macOS 11.0, *) {
+// ^^^^^^^^^^ variable.language.swift
+
+func doSomething(at time: _PrivateTime) -> Bool {}
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function
+//                        ^^^^^^^^^^^^ storage.type
+
+struct LoadData: Codable {
+    var name: String
+//  ^^^^^^^^^^^^^^^^^ meta.struct.swift
+    var path: String?
+//  ^^^ storage.type
+//      ^^^^ variable.other.readwrite
+//            ^^^^^^ storage.type
+//                  ^ keyword.operator.optional
+}
+
+struct Resolution {
+    var width = 0
+//  ^^^^^^^^^^^^^ meta.struct.swift
+//  ^^^ storage.type
+//      ^^^^^ variable.other.readwrite
+//            ^ keyword.operator.assignment
+//              ^ constant.numeric.integer
+    var height = 0
+}
+
+struct markStruct {
+//                ^ punctuation.section.block.begin.swift
+   var mark1: Int
+   var mark2: Int
+   var mark3: Int
+
+   init(mark1: Int, mark2: Int, mark3: Int) {
+// ^^^^ entity.name.function
+//     ^ punctuation.section.parens.begin
+//      ^^^^^ variable.parameter
+//           ^ punctuation.separator
+//             ^^^ storage.type.swift
+//                ^ punctuation.separator
+//                  ^^^^^ variable.parameter
+//                                        ^ punctuation.section.parens.end
+//                                          ^ meta.braces.swift meta.struct.swift meta.function.swift punctuation.section.block.begin.swift
+      self.mark1 = mark1
+      self.mark2 = mark2
+      self.mark3 = mark3
+   }
+// ^ meta.function punctuation.section.block.end
+}
+// <- punctuation.section.block.end
