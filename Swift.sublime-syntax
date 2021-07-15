@@ -389,9 +389,9 @@ contexts:
         - match: '}'
           scope: punctuation.definition.protocol.body.end.swift
           pop: true
-        - include: protocol-properties
-        - include: protocol-method-definition
-        - include: protocol-method-storage
+        # - include: protocol-properties
+        # - include: protocol-method-definition
+        # - include: protocol-method-storage
         - include: brackets
 
   literal-struct:
