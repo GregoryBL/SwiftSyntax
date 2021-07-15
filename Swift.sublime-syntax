@@ -16,7 +16,7 @@ contexts:
     - include: literal-for
     - include: literal-switch
     - include: expression
-    - include: literal-punctuation
+    # - include: literal-punctuation
 
   prototype:
     - include: comments
@@ -38,7 +38,7 @@ contexts:
     - include: literal-language-constant
     - include: literal-language-variable
 
-    - include: literal-method-call
+    # - include: literal-method-call
     - include: literal-function-call
     - include: property-access
 
@@ -437,9 +437,9 @@ contexts:
         - match: '}'
           scope: punctuation.definition.struct.body.end.swift
           pop: true
-        - include: struct-properties
-        - include: struct-method-definition
-        - include: struct-method-storage
+        # - include: struct-properties
+        # - include: struct-method-definition
+        # - include: struct-method-storage
         - include: brackets
 
   literal-enum:
@@ -485,7 +485,7 @@ contexts:
         - match: '}'
           scope: punctuation.definition.enum.body.end.swift
           pop: true
-        - include: enum-cases
+        # - include: enum-cases
 
   ##### FUNCTION DECLARATION #####
 
